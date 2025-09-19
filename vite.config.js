@@ -8,7 +8,7 @@ export default defineConfig({
 
   // Add this server configuration
   server: {
-    port: 5173,
+    port: 5175,
     // Ensure static files are served correctly
     fs: {
       strict: false

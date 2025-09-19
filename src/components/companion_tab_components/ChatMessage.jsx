@@ -20,7 +20,7 @@ const ChatMessage = ({ isBot, text, avatar, products, onProductClick, onTryOnCli
 
   return (
     <div className={`chat-message ${isBot ? 'bot' : 'user'}`}>
-      {isBot && avatar && <img src={avatar} alt="Daxedax Avatar" className="avatar" />}
+      {isBot && avatar && <img src={avatar} alt="AFCP Avatar" className="avatar" />}
       <div className="message-content">
         <div className="message-bubble">
           {text}

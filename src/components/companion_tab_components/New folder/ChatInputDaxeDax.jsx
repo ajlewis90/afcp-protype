@@ -1,4 +1,4 @@
-// src/components/companion_tab_components/ChatInput.jsx (Daxedax version)
+// src/components/companion_tab_components/ChatInput.jsx (AFCP version)
 import React, { useState } from 'react';
 import './ChatInput.css';
 
@@ -7,7 +7,7 @@ const ChatInput = ({ onSend }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
 
-  // Dress-related suggestions (unchanged from original Daxedax content)
+  // Dress-related suggestions (unchanged from original AFCP content)
   const suggestionOptions = [
     'for casual wear...',
     'for a specific occasion...',
@@ -15,7 +15,7 @@ const ChatInput = ({ onSend }) => {
     'which is stylish and affordable...',
   ];
 
-  // Filter suggestions based on user input (matching non-Daxedax logic)
+  // Filter suggestions based on user input (matching non-AFCP logic)
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInput(value);

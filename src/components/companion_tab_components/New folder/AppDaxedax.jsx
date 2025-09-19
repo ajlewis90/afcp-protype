@@ -56,7 +56,7 @@ function App() {
   const [activeCategory, setActiveCategory] = useState('Beauty');
   const [activeFilter, setActiveFilter] = useState('All');
   const [messages, setMessages] = useState([
-    { isBot: true, text: "Hi, welcome to Daxedax! I can help you find and buy what you're looking for. What are you shopping for today?", avatar: 'https://assets.api.uizard.io/api/cdn/stream/57326620-2a53-4912-9b70-e6a4f364b204.png' },
+    { isBot: true, text: "Hi, welcome to AFCP! I can help you find and buy what you're looking for. What are you shopping for today?", avatar: 'https://assets.api.uizard.io/api/cdn/stream/57326620-2a53-4912-9b70-e6a4f364b204.png' },
   ]);
   const [showProductDetailOne, setShowProductDetailOne] = useState(false);
   const [showProductDetailTwo, setShowProductDetailTwo] = useState(false);
