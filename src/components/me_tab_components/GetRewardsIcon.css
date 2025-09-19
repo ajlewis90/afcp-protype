@@ -1,0 +1,10 @@
+/* src/components/me_tab_components/GetRewardsIcon.css */
+.get-rewards-icon {
+  top: 80px;
+  left: 209px;
+  width: 24px;
+  height: 20px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

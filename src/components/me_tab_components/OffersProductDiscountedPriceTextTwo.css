@@ -1,0 +1,10 @@
+/* src/components/me_tab_components/OffersProductDiscountedPriceTextTwo.css */
+.offers-product-discounted-price-text-two {
+  font-size: 14px;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  color: #12110a;
+  display: block;
+  text-align: left;
+  margin-bottom: 5px; /* Added spacing below */
+}

@@ -1,0 +1,10 @@
+/* src/components/home_tab_components/ShoesProductImageTwo.css */
+.shoes-product-image-two {
+  width: 100%; /* 90% of 480px = 432px */
+  max-width: calc(480px - 40px); /* Respect container padding (20px each side) */
+  height: 196px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-top: 20px;
+}

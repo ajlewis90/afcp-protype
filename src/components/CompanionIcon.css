@@ -1,0 +1,10 @@
+/* src/components/CompanionIcon.css */
+.companion-icon {
+  top: 1509px;
+  left: 147px;
+  width: 21px;
+  height: 21px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

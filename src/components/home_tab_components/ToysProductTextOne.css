@@ -1,0 +1,9 @@
+/* src/components/home_tab_components/ToysProductTextOne.css */
+.toys-product-text-one {
+  color: #030303;
+  font-size: 16px;
+  font-family: "Mulish", sans-serif;
+  font-weight: 700;
+  line-height: 25px;
+  display: block; /* Ensure vertical stacking */
+}

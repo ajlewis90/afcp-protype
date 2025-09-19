@@ -1,0 +1,10 @@
+/* src/components/me_tab_components/ForMeTextTitle.css */
+.for-me-text-title {
+  color: #100d0e;
+  font-size: 24px;
+  padding: 15px 20px;
+  font-family: "Mulish", sans-serif;
+  font-weight: 700;
+  line-height: 30px;
+  text-align:center;
+}

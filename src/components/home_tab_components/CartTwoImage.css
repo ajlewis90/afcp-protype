@@ -1,0 +1,8 @@
+/* src/components/home_tab_components/CartTwoImage.css */
+.cart-two-image {
+  width: 55px;
+  height: 55px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

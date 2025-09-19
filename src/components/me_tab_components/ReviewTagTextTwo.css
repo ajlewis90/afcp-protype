@@ -1,0 +1,8 @@
+/* src/components/me_tab_components/ReviewTagTextTwo.css */
+.review-tag-text-two {
+  text-align: left;
+  font-size: 14px;
+  font-family: "Quicksand", sans-serif;
+  color: #787974;
+  margin-bottom: 5px;
+}

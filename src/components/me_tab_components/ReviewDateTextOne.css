@@ -1,0 +1,9 @@
+/* src/components/me_tab_components/ReviewDateTextOne.css */
+.review-date-text-one {
+  text-align: left;
+  font-size: 14px;
+  font-family: "Quicksand", sans-serif;
+  color: #787974; /* Matches gray color used elsewhere */
+  font-weight: 400;
+  display: inline; /* To display alongside reviewer */
+}

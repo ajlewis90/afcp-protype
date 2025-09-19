@@ -1,0 +1,139 @@
+.cart-details-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 20;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.cart-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.cart-details-header h2 {
+  font-family: "Quicksand", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: #12110a;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cart-details-items {
+  margin-bottom: 20px;
+}
+
+.cart-details-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.cart-item-image {
+  width: 55px;
+  height: 56px;
+  object-fit: cover;
+}
+
+.cart-item-info {
+  flex-grow: 1;
+}
+
+.cart-item-info h3 {
+  font-family: "Quicksand", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #12110a;
+  margin: 0 0 5px 0;
+}
+
+.cart-item-info p {
+  font-family: "Quicksand", sans-serif;
+  font-size: 11px;
+  color: #787974;
+  margin: 0;
+}
+
+.cart-item-total {
+  font-family: "Quicksand", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #12110a;
+}
+
+.cart-details-summary {
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-family: "Quicksand", sans-serif;
+  font-size: 14px;
+  color: #12110a;
+}
+
+.summary-row.total {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.coupon-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-family: "Quicksand", sans-serif;
+}
+
+.apply-credit-button {
+  padding: 8px 16px;
+  background-color: #4B0082;
+  color: #fff;
+  border: none;
+  border-radius: 22px; /* Updated to match View Cart button's border-radius */
+  font-family: "Quicksand", sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.apply-credit-button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.shipping-info {
+  text-align: center;
+  margin: 15px 0;
+  font-family: "Quicksand", sans-serif;
+  font-size: 12px;
+  color: #4caf50;
+}
+
+.checkout-button {
+  width: 100%;
+  padding: 15px;
+  background-color: #4B0082;
+  color: #fff;
+  border: none;
+  border-radius: 22px; /* Updated to match View Cart button's border-radius */
+  font-family: "Quicksand", sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+}

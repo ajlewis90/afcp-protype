@@ -1,0 +1,10 @@
+.image {
+  top: 285px;
+  left: 132px;
+  width: 22px;
+  height: 21px;
+  background-image: url(./image.png);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

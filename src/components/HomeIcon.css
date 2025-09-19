@@ -1,0 +1,11 @@
+/* src/components/HomeIcon.css */
+.home-icon {
+  top: 1509px;
+  left: 47px;
+  width: 21px;
+  height: 21px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+

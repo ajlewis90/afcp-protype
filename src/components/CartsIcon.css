@@ -1,0 +1,10 @@
+/* src/components/CartsIcon.css */
+.carts-icon {
+  top: 1509px;
+  left: 247px;
+  width: 21px;
+  height: 21px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

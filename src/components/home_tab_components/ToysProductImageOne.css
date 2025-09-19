@@ -1,0 +1,9 @@
+/* src/components/home_tab_components/ToysProductImageOne.css */
+.toys-product-image-one {
+  width: 100%; /* Changed from 90% to 100% */
+  max-width: calc(480px - 40px); /* Respect container padding (20px each side) */
+  height: 220px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

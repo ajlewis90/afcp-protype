@@ -1,0 +1,9 @@
+/* src/components/me_tab_components/ReviewTextOne.css */
+.review-text-one {
+  text-align: left;
+  font-size: 14px;
+  font-family: "Quicksand", sans-serif;
+  color: #12110a;
+  font-weight: 400;
+  margin-bottom: 10px;
+}

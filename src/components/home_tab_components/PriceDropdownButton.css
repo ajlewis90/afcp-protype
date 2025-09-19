@@ -1,0 +1,34 @@
+/* src/components/home_tab_components/PriceDropdownButton.css */
+.price-dropdown-button {
+  cursor: pointer;
+  width: 105px;
+  height: 35px;
+  padding: 0 8px;
+  border: 0;
+  box-sizing: border-box;
+  border-radius: 22px;
+  background-color: #228B22; /* Dark green background */
+  color: #fff; /* White text */
+  font-size: 12px;
+  font-family: "Mulish", sans-serif;
+  line-height: 19px;
+  outline: none;
+  margin-left: 8px; /* Small margin to separate from Join Group button */
+}
+
+.price-dropdown-button:hover {
+  background-color: #006400; /* Darker green on hover */
+}
+
+.price-dropdown-button:active {
+  background-color: #004d00; /* Even darker green when pressed */
+}
+
+.price-dropdown-button.pending {
+  background-color: #32CD32; /* Lighter green to indicate pending request */
+  width: 115px; /* Slightly wider to accommodate "Requested ✓" text */
+}
+
+.price-dropdown-button.pending:hover {
+  background-color: #228B22; /* Original green on hover for pending */
+}

@@ -1,0 +1,288 @@
+/* src/App.css */
+.mobile-container {
+  max-width: 480px; /* Mobile screen width */
+  margin: 0 auto;   /* Center horizontally */
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column; /* Stack content and tab bar */
+  padding: 20px;    /* Padding for all content */
+}
+
+.search-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between Search text and SearchBar */
+}
+
+.fixed-search-bar {
+  position: fixed;
+  top: 61px; /* 20px container padding + 41px Search text height */
+  left: 5%; /* 5% padding from left */
+  width: 90%; /* 90% of 480px = 432px */
+  max-width: calc(480px - 40px); /* Respect container padding (20px each side) */
+  z-index: 10; /* Ensure it stays above scrolling content */
+}
+
+/* src/App.css (snippet) */
+.fixed-carts-text {
+  position: fixed;
+  top: 61px; /* Match SearchBar position */
+  left: 5%; /* 5% padding from left */
+  width: 90%; /* 90% of 480px = 432px, matches SearchBar */
+  max-width: calc(480px - 40px); /* Respect container padding (20px each side) */
+  z-index: 10; /* Ensure it stays above scrolling content */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center the text horizontally */
+  align-items: center; /* Vertically center the text */
+}
+
+.scrollable-content {
+  margin-top: 10px; /* Small gap below CartsText */
+  width: 100%; /* Full width */
+  padding-bottom: 120px; /* Ensure full visibility of all components, including future ones */
+  overflow-y: auto; /* Enable vertical scrolling for content */
+}
+
+.cart-row {
+  display: flex;
+  align-items: center; /* Vertically center all components */
+  gap: 10px; /* Space between CartOneImage, cart-column, and ViewBusinessOneCartButton */
+  padding: 0 20px; /* Match card padding for alignment within 440px width */
+  justify-content: space-between; /* Distribute space evenly, pushing ViewBusinessOneCartButton to the right end */
+  margin-bottom: 20px; /* Increased gap between rows */
+}
+
+.cart-row-two {
+  display: flex;
+  align-items: center; /* Vertically center all components */
+  gap: 10px; /* Space between CartTwoImage, cart-column-two, and ViewBusinessTwoCartButton */
+  padding: 0 20px; /* Match card padding for alignment within 440px width */
+  justify-content: space-between; /* Distribute space evenly, pushing ViewBusinessTwoCartButton to the right end */
+  margin-bottom: 20px; /* Increased gap between rows */
+}
+
+.cart-row-three {
+  display: flex;
+  align-items: center; /* Vertically center all components */
+  gap: 10px; /* Space between CartThreeImage, cart-column-three, and ViewBusinessThreeCartButton */
+  padding: 0 20px; /* Match card padding for alignment within 440px width */
+  justify-content: space-between; /* Distribute space evenly, pushing ViewBusinessOneCartButton to the right end */
+  margin-bottom: 20px; /* Increased gap between rows */
+}
+
+.cart-column {
+  display: flex;
+  flex-direction: column; /* Stack CartOneBusinessName and CartOneBusinessPrice vertically */
+  gap: 5px; /* Small gap between CartOneBusinessName and CartOneBusinessPrice */
+}
+
+.cart-column-two {
+  display: flex;
+  flex-direction: column; /* Stack CartTwoBusinessName and CartTwoBusinessPrice vertically */
+  gap: 5px; /* Small gap between CartTwoBusinessName and CartTwoBusinessPrice */
+}
+
+.cart-column-three {
+  display: flex;
+  flex-direction: column; /* Stack CartThreeBusinessName and CartThreeBusinessPrice vertically */
+  gap: 5px; /* Small gap between CartThreeBusinessName and CartThreeBusinessPrice */
+}
+.cart-button-two {
+  /* Placeholder styling, can be updated with a button component later */
+  width: 94px; /* Matches ViewBusinessOneCartButton for consistency */
+  height: 32px; /* Matches ViewBusinessOneCartButton for consistency */
+}
+
+.category-tabs {
+  display: flex;
+  overflow-x: auto; /* Horizontal scrolling */
+  gap: 20px; /* Space between category tabs */
+  padding-bottom: 10px; /* Space below tabs */
+  white-space: nowrap; /* Prevent wrapping */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+  margin-top: 10px; /* Space between SearchBar and category tabs */
+}
+
+.category-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px; /* Space between icon and text */
+  min-width: 60px; /* Ensure enough space for each tab */
+}
+
+.category-tab.active div[class$="-text"] {
+  color: #030303; /* Active text color for any category text component */
+}
+
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 480px; /* Match mobile container */
+  max-width: 100%; /* Responsive */
+  display: flex;
+  justify-content: space-around;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  padding: 10px 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10; /* Stay above scrolling content */
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 5px;
+  cursor: pointer;
+  color: #666; /* Inactive color */
+  background: none;
+  border: none;
+}
+
+.tab.active {
+  color: #007bff; /* Active color (Home starts active) */
+}
+
+.tab-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.tab-label {
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* src/App.css (snippet) */
+.companion-chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Fill available space */
+}
+
+.chat-messages {
+  flex-grow: 1; /* Allow messages to take up available space */
+  padding: 20px;
+  overflow-y: auto; /* Enable scrolling for messages if they exceed height */
+}
+
+/* Styles for MeCard */
+.me-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.me-card-content {
+  padding: 20px;
+}
+
+.me-card-icons {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.me-card .icon-text-pair {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  cursor: pointer;
+  background-color: #f9f9f9;
+}
+
+.me-card .icon-text-pair.active {
+  background-color: #fff;
+  border-bottom: 2px solid #4B0082;
+}
+
+.me-tab-content {
+  text-align: center;
+  font-size: 16px;
+  font-family: "Quicksand", sans-serif;
+  color: #666;
+}
+
+.me-tab-content .product-group {
+  cursor: default; /* No click handler needed for Offers for me */
+  display: flex; /* Added to control child alignment */
+  flex-direction: column;
+  align-items: flex-start; /* Left-align children */
+  text-align: left; /* Override parent text-align: center */
+}
+
+.me-tab-content .product-group:hover {
+  background-color: transparent; /* Disable hover effect */
+}
+
+.me-tab-content .price-and-button-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Explicitly ensure left and right alignment */
+  gap: 5px;
+  margin-bottom: 5px;
+  width: 100%; /* Ensure the row takes the full width of product-group */
+}
+
+.me-tab-content .spacer {
+  flex-grow: 1;
+}
+
+/* New styles for My Reviews tab */
+.me-tab-content .reviewer-date-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 5px;
+  flex-wrap: nowrap; /* Prevent wrapping to ensure inline alignment */
+}
+
+.me-tab-content .likes-dislikes-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* Reset body margin */
+body {
+  margin: 0;
+}
+
+/* Tab content and notification badge styles */
+.tab-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  background: #ff4757;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

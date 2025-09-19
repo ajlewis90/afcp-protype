@@ -1,0 +1,9 @@
+/* src/components/home_tab_components/BeautyProductImageOne.css */
+.beauty-product-image-one {
+  width: 100%; /* 90% of 480px = 432px */
+  max-width: calc(480px - 40px); /* Respect container padding (20px each side) */
+  height: 196px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

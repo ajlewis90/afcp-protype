@@ -1,0 +1,8 @@
+/* src/components/home_tab_components/ApparelProductTextOne.css */
+.apparel-product-text-one {
+  font-size: 16px;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  color: #12110a;
+  display: block;
+}

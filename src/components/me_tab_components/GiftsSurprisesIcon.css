@@ -1,0 +1,10 @@
+/* src/components/me_tab_components/GiftsSurprisesIcon.css */
+.gifts-surprises-icon {
+  top: 78px;
+  left: 310px;
+  width: 21px;
+  height: 21px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

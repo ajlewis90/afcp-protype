@@ -1,0 +1,16 @@
+/* src/components/home_tab_components/JoinGroupButtonTwo.css */
+.join-group-button-two {
+  cursor: pointer;
+  width: 105px;
+  height: 35px;
+  padding: 0 8px;
+  border: 0;
+  box-sizing: border-box;
+  border-radius: 22px;
+  background-color: #4B0082;
+  color: #fff;
+  font-size: 12px;
+  font-family: "Mulish", sans-serif;
+  line-height: 19px;
+  outline: none;
+}

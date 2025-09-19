@@ -1,0 +1,8 @@
+/* src/components/me_tab_components/ReviewTagTextOne.css */
+.review-tag-text-one {
+  text-align: left;
+  font-size: 14px;
+  font-family: "Quicksand", sans-serif;
+  color: #787974; /* Matches OffersProductOriginalPriceTextOne */
+  margin-bottom: 5px;
+}

@@ -1,0 +1,9 @@
+/* src/components/home_tab_components/ApparelText.css */
+.apparel-text {
+  color: #666; /* Inactive color */
+  font-size: 15px;
+  font-family: "Mulish", sans-serif;
+  font-weight: 700;
+  line-height: 25px;
+  cursor: pointer;
+}

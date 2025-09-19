@@ -1,0 +1,9 @@
+/* src/components/home_tab_components/ShoesIcon.css */
+.shoes-icon {
+  width: 41px;
+  height: 40px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: pointer; /* Indicate clickability */
+}

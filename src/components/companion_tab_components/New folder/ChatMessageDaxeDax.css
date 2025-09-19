@@ -1,0 +1,131 @@
+/* src/components/companion_tab_components/ChatMessage.css (Daxedax version) */
+.chat-message {
+  display: flex;
+  align-items: flex-start;
+  margin: 10px 0;
+  max-width: 90%;
+}
+
+.chat-message.bot {
+  margin-left: 10px;
+  flex-direction: row;
+}
+
+.chat-message.user {
+  margin-right: 10px;
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 10px;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.message-bubble {
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-family: "Mulish", sans-serif;
+  line-height: 20px;
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.chat-message.bot .message-bubble {
+  background-color: #4caf50;
+  color: white;
+}
+
+.product-recommendations {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.product-row,
+.product-row-one,
+.product-row-two,
+.product-row-three,
+.product-row-four {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.product-row-one:last-child,
+.product-row-two:last-child,
+.product-row-three:last-child,
+.product-row-four:last-child {
+  margin-bottom: 0;
+}
+
+.product-image {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.product-column,
+.product-column-one,
+.product-column-two,
+.product-column-three,
+.product-column-four {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.product-name {
+  font-size: 14px;
+  font-family: "Quicksand", sans-serif;
+  color: #12110a;
+  margin-bottom: 5px;
+}
+
+.product-price {
+  font-size: 14px;
+  font-family: "Quicksand", sans-serif;
+  color: #787974;
+}
+
+.view-item-button {
+  background-color: #fff;
+  color: #666;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 5px 15px;
+  font-size: 12px;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  width: 100%;
+}
+
+.view-item-button:hover {
+  background-color: #f5f5f5;
+  border-color: #bbb;
+}

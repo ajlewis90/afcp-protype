@@ -1,0 +1,10 @@
+/* src/components/home_tab_components/ApparelProductImageOne.css */
+.apparel-product-image-one {
+  width: 100%; /* 90% of 480px = 432px */
+  max-width: calc(480px - 40px); /* Respect container padding (20px each side) */
+  height: 196px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-top: 20px;
+}

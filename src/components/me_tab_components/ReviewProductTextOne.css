@@ -1,0 +1,9 @@
+/* src/components/me_tab_components/ReviewProductTextOne.css */
+.review-product-text-one {
+  text-align: left; /* Matches OffersProductTextOne */
+  font-size: 16px;
+  font-family: "Quicksand", sans-serif;
+  color: #12110a;
+  font-weight: 700;
+  margin-bottom: 5px;
+}

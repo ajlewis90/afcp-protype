@@ -1,0 +1,32 @@
+/* src/components/companion_tab_components/CompanionChatHeader.css */
+.companion-chat-header {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  line-height: 30px;
+}
+
+.companion-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.companion-title {
+  font-size: 24px;
+  font-family: "Mulish", sans-serif;
+  color: #12110a;
+  flex-grow: 1;
+}
+
+.close-icon {
+  font-size: 24px;
+  color: #666;
+  cursor: pointer;
+}

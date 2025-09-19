@@ -1,0 +1,28 @@
+/* src/components/home_tab_components/ShoesCard.css */
+.shoes-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.shoes-card-content {
+  padding: 20px;
+}
+
+.shoes-card-icons {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+  overflow-x: auto; /* Added for horizontal scrolling */
+  white-space: nowrap; /* Added for horizontal scrolling */
+}
+
+.shoes-products {
+  margin-top: 10px;
+  text-align: center;
+  color: #666;
+}

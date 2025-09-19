@@ -1,0 +1,7 @@
+/* src/components/home_tab_components/SearchBarPrompt.css */
+.search-bar-prompt {
+  color: #ac9ea3;
+  font-size: 17px;
+  font-family: "Mulish", sans-serif;
+  line-height: 29px;
+}

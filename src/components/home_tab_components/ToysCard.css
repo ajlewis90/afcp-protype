@@ -1,0 +1,64 @@
+/* src/components/home_tab_components/ToysCard.css */
+.toys-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.toys-card-content {
+  padding: 20px;
+}
+
+.toys-card-icons {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+}
+
+.icon-text-pair {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  cursor: pointer;
+  background-color: #f9f9f9;
+}
+
+.icon-text-pair.active {
+  background-color: #fff;
+  border-bottom: 2px solid #4B0082;
+}
+
+.product-details-row,
+.product-details-row-two {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.spacer {
+  flex-grow: 1; /* Pushes JoinGroupButton to the right */
+}
+
+.group-buy-row,
+.group-buy-row-two {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 20px; /* Space between product groups */
+}
+
+.product-group {
+  cursor: pointer; /* Indicate clickable area */
+}
+
+.product-group:hover {
+  background-color: #f5f5f5; /* Add hover effect for better UX */
+}

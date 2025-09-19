@@ -1,0 +1,10 @@
+/* src/components/me_tab_components/ReviewerTextTwo.css */
+.reviewer-text-two {
+  text-align: left;
+  font-size: 14px;
+  font-family: "Quicksand", sans-serif;
+  color: #12110a;
+  font-weight: 500;
+  display: inline;
+  margin-right: 10px;
+}

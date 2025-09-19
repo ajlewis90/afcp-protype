@@ -1,0 +1,8 @@
+/* src/components/home_tab_components/NailsText.css */
+.nails-text {
+  color: #666; /* Inactive color, matching CardAllText */
+  font-size: 15px;
+  font-family: "Mulish", sans-serif;
+  font-weight: 700;
+  line-height: 20px;
+}

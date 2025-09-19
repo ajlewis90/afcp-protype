@@ -1,0 +1,10 @@
+/* src/components/home_tab_components/SearchIcon.css */
+.search-icon {
+  width: 23px;
+  height: 21px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-left: 3.5%; /* Small margin from left corner of SearchBar */
+  margin-top: 3.5%;
+}

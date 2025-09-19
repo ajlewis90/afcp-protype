@@ -1,0 +1,12 @@
+/* src/components/home_tab_components/CartsText.css */
+.carts-text {
+  color: #12110a;
+  font-size: 24px;
+  font-family: "Mulish", sans-serif;
+  font-weight: 700;
+  line-height: 30px;
+  padding: 15px 20px;
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center the text horizontally */
+  align-items: center; /* Vertically center the text (optional, but ensures alignment) */
+}

@@ -1,0 +1,15 @@
+/* src/components/me_tab_components/ReviewImageFour.css */
+.review-image-four {
+  width: 100%;
+  max-width: calc(480px - 40px);
+  height: 196px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-image: url('https://assets.api.uizard.io/api/cdn/stream/7b9a06a3-5751-4ce4-80b6-ca2a281b9648.png'); /* Placeholder */
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

@@ -1,0 +1,9 @@
+/* src/components/me_tab_components/ReviewPriceTextOne.css */
+.review-price-text-one {
+  text-align: left;
+  font-size: 14px;
+  font-family: "Quicksand", sans-serif;
+  color: #12110a; /* Matches OffersProductDiscountedPriceTextOne */
+  font-weight: 500;
+  margin-bottom: 10px; /* Increased spacing before reviewer info */
+}

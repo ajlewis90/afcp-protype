@@ -1,0 +1,12 @@
+/* src/components/CartsTabText.css */
+.carts-tab-text {
+  font-size: 12px;
+  font-family: "Quicksand", sans-serif;
+  color: #666;
+  margin-top: 2px;
+}
+
+.tab.active .carts-tab-text {
+  color: #007bff;
+  font-weight: 700; /* Bolder when active */
+}

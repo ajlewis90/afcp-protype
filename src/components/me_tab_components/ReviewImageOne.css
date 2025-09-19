@@ -1,0 +1,14 @@
+/* src/components/me_tab_components/ReviewImageOne.css */
+.review-image-one {
+  width: 100%; /* Matches OffersProductImageOne */
+  max-width: calc(480px - 40px); /* Respect container padding (20px each side) */
+  height: 196px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-bottom: 10px;
+  background-image: url('https://assets.api.uizard.io/api/cdn/stream/6666023d-1f89-493b-86d5-768894fbd3b6.png'); /* Updated to new image URL */
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

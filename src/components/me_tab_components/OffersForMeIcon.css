@@ -1,0 +1,10 @@
+/* src/components/me_tab_components/OffersForMeIcon.css */
+.offers-for-me-icon {
+  top: 122px;
+  left: 47px;
+  width: 21px;
+  height: 17px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

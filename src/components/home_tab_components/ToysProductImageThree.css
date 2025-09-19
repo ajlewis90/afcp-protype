@@ -1,0 +1,10 @@
+/* src/components/home_tab_components/ToysProductImageThree.css */
+.toys-product-image-three {
+  width: 100%; /* Changed from 90% to 100% */
+  max-width: calc(480px - 40px); /* Respect container padding (20px each side) */
+  height: 196px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-top: 20px;
+}

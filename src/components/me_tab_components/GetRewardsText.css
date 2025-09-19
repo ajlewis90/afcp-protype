@@ -1,0 +1,17 @@
+/* src/components/me_tab_components/GetRewardsText.css */
+.get-rewards-text {
+  color: #666; /* Lighter color when inactive */
+  font-size: 11px;
+  font-family: "Poppins";
+  font-weight: 700;
+  line-height: 20px;
+  max-width: 44px; /* Match OffersForMeText to force two-line wrapping */
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-align: center;
+}
+
+/* Darken the color when the tab is active */
+.icon-text-pair.active .get-rewards-text {
+  color: #0e0e0e; /* Match OffersForMeText color when active */
+}

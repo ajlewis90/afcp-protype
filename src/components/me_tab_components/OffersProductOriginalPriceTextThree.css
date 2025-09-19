@@ -1,0 +1,9 @@
+/* src/components/me_tab_components/OffersProductOriginalPriceTextThree.css */
+.offers-product-original-price-text-three {
+  font-size: 14px;
+  font-family: "Quicksand", sans-serif;
+  color: #787974;
+  display: block;
+  text-align: left;
+  margin-bottom: 5px; /* Added spacing below */
+}

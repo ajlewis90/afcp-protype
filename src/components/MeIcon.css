@@ -1,0 +1,11 @@
+/* src/components/MeIcon.css */
+.me-icon {
+  top: 1509px;
+  left: 347px;
+  width: 21px;
+  height: 21px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+

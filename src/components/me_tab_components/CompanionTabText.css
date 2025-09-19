@@ -1,0 +1,11 @@
+/* src/components/CompanionTabText.css */
+.companion-tab-text {
+  font-size: 12px;
+  font-family: "Quicksand", sans-serif;
+  color: #666;
+  margin-top: 2px;
+}
+
+.tab.active .companion-tab-text {
+  color: #007bff;
+}

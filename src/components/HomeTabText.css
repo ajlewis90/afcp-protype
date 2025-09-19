@@ -1,0 +1,12 @@
+/* src/components/HomeTabText.css */
+.home-tab-text {
+  font-size: 12px;
+  font-family: "Quicksand", sans-serif;
+  color: #666; /* Inactive color, matches .tab in App.css */
+  margin-top: 2px;
+}
+
+.tab.active .home-tab-text {
+  color: #007bff;
+  font-weight: 700; /* Bolder when active */
+}

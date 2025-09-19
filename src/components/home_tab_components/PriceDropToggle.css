@@ -1,0 +1,74 @@
+/* src/components/home_tab_components/PriceDropToggle.css */
+
+.price-drop-toggle-container {
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.price-drop-toggle-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+}
+
+.price-drop-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-right: 12px;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 50px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 24px;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-slider.enabled {
+  background-color: #666;
+}
+
+.toggle-knob {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-slider.enabled .toggle-knob {
+  transform: translateX(26px);
+}
+
+.toggle-switch:hover .toggle-slider {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-switch:hover .toggle-slider.enabled {
+  background-color: #555;
+}
