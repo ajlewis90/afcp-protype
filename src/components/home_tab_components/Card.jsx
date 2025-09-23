@@ -14,17 +14,12 @@ import BeautyProductImageOne from './BeautyProductImageOne';
 import BeautyProductTextOne from './BeautyProductTextOne';
 import BeautyProductOneIndividualPriceText from './BeautyProductOneIndividualPriceText';
 import BeautyProductOneSizesText from './BeautyProductOneSizesText';
-import JoinGroupButton from './JoinGroupButton';
-import JoinGroupButtonTwo from './JoinGroupButtonTwo';
+import ViewProductButton from './ViewProductButton';
 import PriceDropdownButton from './PriceDropdownButton';
-import GroupBuyIcon from './GroupBuyIcon';
-import GroupBuyIconTwo from './GroupBuyIconTwo';
-import BeautyProductOneGroupCondition from './BeautyProductOneGroupCondition';
 import BeautyProductImageTwo from './BeautyProductImageTwo';
 import BeautyProductTextTwo from './BeautyProductTextTwo';
 import BeautyProductTwoIndivdualPriceText from './BeautyProductTwoIndivdualPriceText';
 import BeautyProductTwoColorsText from './BeautyProductTwoColorsText';
-import BeautyProductTwoGroupCondition from './BeautyProductTwoGroupCondition';
 import './Card.css';
 
 const Card = ({ activeFilter, onFilterClick, onProductOneClick, onProductTwoClick, onPriceDropdownClick, priceDropdownProduct }) => {
@@ -77,11 +72,7 @@ const Card = ({ activeFilter, onFilterClick, onProductOneClick, onProductTwoClic
               <div className="product-details-row">
                 <BeautyProductOneSizesText />
                 <div className="spacer" />
-                <JoinGroupButton />
-              </div>
-              <div className="group-buy-row">
-                <GroupBuyIcon />
-                <BeautyProductOneGroupCondition />
+                <ViewProductButton />
               </div>
             </div>
             <div className="product-group" onClick={onProductTwoClick}>
@@ -91,11 +82,7 @@ const Card = ({ activeFilter, onFilterClick, onProductOneClick, onProductTwoClic
               <div className="product-details-row-two">
                 <BeautyProductTwoColorsText />
                 <div className="spacer" />
-                <JoinGroupButtonTwo />
-              </div>
-              <div className="group-buy-row-two">
-                <GroupBuyIconTwo />
-                <BeautyProductTwoGroupCondition />
+                <ViewProductButton />
               </div>
             </div>
           </>

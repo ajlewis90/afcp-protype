@@ -39,15 +39,6 @@ const ProductDetailFive = ({ onClose, onPriceDropToggle, priceDropSettings }) =>
           </div>
           <div className="group-info">
             <div className="price-section">
-              <div className="price-label">Group price:</div>
-              <div className="price-value">$55.00</div>
-              <button className="join-group">Join Group</button>
-            </div>
-            <div className="group-timer">2 days left</div>
-            <div className="group-condition">2 people want this, 3 more needed to complete the group</div>
-          </div>
-          <div className="group-info">
-            <div className="price-section">
               <div className="price-label">Individual price:</div>
               <div className="price-value individual-price-text">$70.00</div>
               <button className="buy-individual">Buy Now</button>

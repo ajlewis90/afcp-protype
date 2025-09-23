@@ -12,17 +12,12 @@ import ShoesProductImageOne from './ShoesProductImageOne';
 import ShoesProductTextOne from './ShoesProductTextOne';
 import ShoesProductOneIndividualPriceText from './ShoesProductOneIndividualPriceText';
 import ShoesProductOneSizesText from './ShoesProductOneSizesText';
-import JoinGroupButtonSeven from './JoinGroupButtonSeven';
-import GroupBuyIconSeven from './GroupBuyIconSeven';
+import ViewProductButton from './ViewProductButton';
 import PriceDropdownButton from './PriceDropdownButton';
-import ShoesProductOneGroupCondition from './ShoesProductOneGroupCondition';
 import ShoesProductImageTwo from './ShoesProductImageTwo';
 import ShoesProductTextTwo from './ShoesProductTextTwo';
 import ShoesProductTwoIndividualPriceText from './ShoesProductTwoIndividualPriceText';
 import ShoesProductTwoColorsText from './ShoesProductTwoColorsText';
-import JoinGroupButtonEight from './JoinGroupButtonEight';
-import GroupBuyIconEight from './GroupBuyIconEight';
-import ShoesProductTwoGroupCondition from './ShoesProductTwoGroupCondition';
 import ProductDetailSeven from './ProductDetailSeven';
 import ProductDetailEight from './ProductDetailEight';
 import './ShoesCard.css';
@@ -98,12 +93,8 @@ const ShoesCard = ({
                 <ShoesProductOneSizesText />
                 <div className="spacer" />
                 <div onClick={handleJoinGroupClick}>
-                  <JoinGroupButtonSeven />
+                  <ViewProductButton />
                 </div>
-              </div>
-              <div className="group-buy-row">
-                <GroupBuyIconSeven />
-                <ShoesProductOneGroupCondition />
               </div>
             </div>
             <div className="product-group" onClick={handleProductEightClick}>
@@ -114,12 +105,8 @@ const ShoesCard = ({
                 <ShoesProductTwoColorsText />
                 <div className="spacer" />
                 <div onClick={handleJoinGroupClick}>
-                  <JoinGroupButtonEight />
+                  <ViewProductButton />
                 </div>
-              </div>
-              <div className="group-buy-row-two">
-                <GroupBuyIconEight />
-                <ShoesProductTwoGroupCondition />
               </div>
             </div>
           </>

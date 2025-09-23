@@ -14,17 +14,12 @@ import ToysProductImageOne from './ToysProductImageOne';
 import ToysProductTextOne from './ToysProductTextOne';
 import ToysProductOneIndividualPriceText from './ToysProductOneIndividualPriceText';
 import ToysProductOneAgeRangeText from './ToysProductOneAgeRangeText';
-import JoinGroupButtonThree from './JoinGroupButtonThree'; // New component
-import GroupBuyIconThree from './GroupBuyIconThree'; // New component
+import ViewProductButton from './ViewProductButton';
 import PriceDropdownButton from './PriceDropdownButton';
-import ToysProductOneGroupCondition from './ToysProductOneGroupCondition';
 import ToysProductImageTwo from './ToysProductImageTwo';
 import ToysProductTextTwo from './ToysProductTextTwo';
 import ToysProductTwoIndividualPriceText from './ToysProductTwoIndividualPriceText';
 import ToysProductTwoAgeRangeText from './ToysProductTwoAgeRangeText';
-import JoinGroupButtonFour from './JoinGroupButtonFour'; // New component
-import GroupBuyIconFour from './GroupBuyIconFour'; // New component
-import ToysProductTwoGroupCondition from './ToysProductTwoGroupCondition';
 import ProductDetailThree from './ProductDetailThree';
 import ProductDetailFour from './ProductDetailFour';
 import './ToysCard.css';
@@ -107,12 +102,8 @@ const ToysCard = ({
                 <ToysProductOneAgeRangeText />
                 <div className="spacer" />
                 <div onClick={handleJoinGroupClick}>
-                  <JoinGroupButtonThree /> {/* Updated to JoinGroupButtonThree */}
+                  <ViewProductButton />
                 </div>
-              </div>
-              <div className="group-buy-row">
-                <GroupBuyIconThree /> {/* Updated to GroupBuyIconThree */}
-                <ToysProductOneGroupCondition />
               </div>
             </div>
             <div className="product-group" onClick={handleProductFourClick}>
@@ -123,12 +114,8 @@ const ToysCard = ({
                 <ToysProductTwoAgeRangeText />
                 <div className="spacer" />
                 <div onClick={handleJoinGroupClick}>
-                  <JoinGroupButtonFour /> {/* Updated to JoinGroupButtonFour */}
+                  <ViewProductButton />
                 </div>
-              </div>
-              <div className="group-buy-row-two">
-                <GroupBuyIconFour /> {/* Updated to GroupBuyIconFour */}
-                <ToysProductTwoGroupCondition />
               </div>
             </div>
           </>

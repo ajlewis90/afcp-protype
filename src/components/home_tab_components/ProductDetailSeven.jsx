@@ -41,15 +41,6 @@ const ProductDetailSeven = ({ onClose, onPriceDropToggle, priceDropSettings }) =
           </div>
           <div className="group-info">
             <div className="price-section">
-              <div className="price-label">Group price:</div>
-              <div className="price-value">$300.00</div>
-              <button className="join-group">Join Group</button>
-            </div>
-            <div className="group-timer">2 days left</div>
-            <div className="group-condition">4 people want this, 1 more needed to complete the group</div>
-          </div>
-          <div className="group-info">
-            <div className="price-section">
               <div className="price-label">Individual price:</div>
               <div className="price-value individual-price-text">$335.00</div>
               <button className="buy-individual">Buy Now</button>

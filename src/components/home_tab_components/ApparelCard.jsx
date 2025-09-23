@@ -14,17 +14,12 @@ import ApparelProductImageOne from './ApparelProductImageOne';
 import ApparelProductTextOne from './ApparelProductTextOne';
 import ApparelProductOneIndividualPriceText from './ApparelProductOneIndividualPriceText';
 import ApparelProductOneSizesText from './ApparelProductOneSizesText';
-import JoinGroupButtonFive from './JoinGroupButtonFive';
-import GroupBuyIconFive from './GroupBuyIconFive';
+import ViewProductButton from './ViewProductButton';
 import PriceDropdownButton from './PriceDropdownButton';
-import ApparelProductOneGroupCondition from './ApparelProductOneGroupCondition';
 import ApparelProductImageTwo from './ApparelProductImageTwo';
 import ApparelProductTextTwo from './ApparelProductTextTwo';
 import ApparelProductTwoIndividualPriceText from './ApparelProductTwoIndividualPriceText';
 import ApparelProductTwoColorsText from './ApparelProductTwoColorsText';
-import JoinGroupButtonSix from './JoinGroupButtonSix';
-import GroupBuyIconSix from './GroupBuyIconSix';
-import ApparelProductTwoGroupCondition from './ApparelProductTwoGroupCondition';
 import ProductDetailFive from './ProductDetailFive';
 import ProductDetailSix from './ProductDetailSix';
 import './ApparelCard.css';
@@ -107,12 +102,8 @@ const ApparelCard = ({
                 <ApparelProductOneSizesText />
                 <div className="spacer" />
                 <div onClick={handleJoinGroupClick}>
-                  <JoinGroupButtonFive />
+                  <ViewProductButton />
                 </div>
-              </div>
-              <div className="group-buy-row">
-                <GroupBuyIconFive />
-                <ApparelProductOneGroupCondition />
               </div>
             </div>
             <div className="product-group" onClick={handleProductSixClick}>
@@ -123,12 +114,8 @@ const ApparelCard = ({
                 <ApparelProductTwoColorsText />
                 <div className="spacer" />
                 <div onClick={handleJoinGroupClick}>
-                  <JoinGroupButtonSix />
+                  <ViewProductButton />
                 </div>
-              </div>
-              <div className="group-buy-row-two">
-                <GroupBuyIconSix />
-                <ApparelProductTwoGroupCondition />
               </div>
             </div>
           </>
