@@ -54,6 +54,29 @@
   color: #4caf50;
 }
 
+.voice-input-button.listening {
+  animation: pulse 1.5s ease-in-out infinite alternate;
+  color: #f44336;
+}
+
+.voice-input-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.voice-input-button.disabled:hover {
+  color: #666;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
 .send-button {
   margin-left: 10px;
   padding: 10px 20px;

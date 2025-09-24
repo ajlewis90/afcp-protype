@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './ChatInput.css';
 
 const ChatInput = ({ onSend }) => {
   const [input, setInput] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [isVoiceSupported, setIsVoiceSupported] = useState(false);
+  const recognitionRef = useRef(null);
+  const onSendRef = useRef(onSend);
+  
+  // Update the ref when onSend changes
+  useEffect(() => {
+    onSendRef.current = onSend;
+  }, [onSend]);
 
   const suggestionOptions = [
     'for casual wear...',
@@ -39,9 +48,91 @@ const ChatInput = ({ onSend }) => {
     }
   };
 
+  // Check if speech recognition is supported
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      setIsVoiceSupported(true);
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = 'en-US';
+      
+      recognitionRef.current.onstart = () => {
+        console.log('Voice recognition started');
+        setIsListening(true);
+      };
+      
+      recognitionRef.current.onresult = (event) => {
+        const transcript = event.results?.[0]?.[0]?.transcript;
+        if (transcript) {
+          console.log('Voice recognition result:', transcript);
+          setInput(transcript);
+          // Automatically send the voice message
+          setTimeout(() => {
+            if (transcript.trim()) {
+              onSendRef.current(transcript);
+              setInput('');
+              setSuggestions([]);
+            }
+          }, 100);
+        } else {
+          console.log('No transcript received from voice recognition');
+        }
+      };
+      
+      recognitionRef.current.onerror = (event) => {
+        console.error('Voice recognition error:', event.error);
+        setIsListening(false);
+        if (event.error === 'not-allowed') {
+          alert('Microphone access denied. Please allow microphone access and try again.');
+        } else if (event.error === 'network') {
+          alert('Network error occurred during voice recognition.');
+        } else {
+          alert('Voice recognition error occurred. Please try again.');
+        }
+      };
+      
+      recognitionRef.current.onend = () => {
+        console.log('Voice recognition ended');
+        setIsListening(false);
+      };
+    } else {
+      console.log('Speech recognition not supported');
+      setIsVoiceSupported(false);
+    }
+    
+    // Cleanup function
+    return () => {
+      if (recognitionRef.current && isListening) {
+        try {
+          recognitionRef.current.stop();
+        } catch (error) {
+          console.log('Recognition already stopped');
+        }
+      }
+    };
+  }, []); // Empty dependency array to prevent re-initialization
+
   const handleVoiceInput = () => {
-    console.log('Voice input activated');
-    // Placeholder for voice input functionality
+    if (!isVoiceSupported) {
+      alert('Voice recognition is not supported in your browser. Please use Chrome, Safari, or Edge.');
+      return;
+    }
+    
+    if (isListening) {
+      // Stop listening
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      // Start listening
+      try {
+        recognitionRef.current.start();
+      } catch (error) {
+        console.error('Error starting voice recognition:', error);
+        alert('Failed to start voice recognition. Please try again.');
+      }
+    }
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -101,8 +192,13 @@ const ChatInput = ({ onSend }) => {
             placeholder="Message companion"
             className="chat-input"
           />
-          <button onClick={handleVoiceInput} className="voice-input-button">
-            🎙️
+          <button 
+            onClick={handleVoiceInput} 
+            className={`voice-input-button ${isListening ? 'listening' : ''} ${!isVoiceSupported ? 'disabled' : ''}`}
+            disabled={!isVoiceSupported}
+            title={isListening ? 'Stop voice input' : 'Start voice input'}
+          >
+            {isListening ? '🔴' : '🎙️'}
           </button>
         </div>
         <button onClick={handleSend} className="send-button">
