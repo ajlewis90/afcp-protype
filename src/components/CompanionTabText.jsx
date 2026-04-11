@@ -5,7 +5,7 @@ import './CompanionTabText.css';
 const CompanionTabText = () => {
   return (
     <span className="companion-tab-text tab-label">
-      Companion
+      Agent
     </span>
   );
 };

@@ -165,7 +165,7 @@ const detectClothingCategory = (message) => {
 };
 
 function App() {
-  const [activeTab, setActiveTab] = useState('Companion');
+  const [activeTab, setActiveTab] = useState('Agent');
   const [activeCategory, setActiveCategory] = useState('Beauty');
   const [activeFilter, setActiveFilter] = useState('All');
   const [messages, setMessages] = useState([
@@ -395,7 +395,7 @@ function App() {
 
   // Effect to handle price drop notifications when navigating to Companion
   React.useEffect(() => {
-    if (priceDropNotifications.length > 0 && activeTab === 'Companion') {
+    if (priceDropNotifications.length > 0 && activeTab === 'Agent') {
       // Process all pending notifications
       priceDropNotifications.forEach((notification, index) => {
         const discountedPrice = calculateDiscountedPrice(notification.originalPrice);
@@ -428,7 +428,7 @@ function App() {
     }
     
     // Legacy support for old price dropdown system
-    if (priceDropdownProduct && activeTab === 'Companion') {
+    if (priceDropdownProduct && activeTab === 'Agent') {
       const discountedPrice = calculateDiscountedPrice(priceDropdownProduct.originalPrice);
       const displayName = getProductDisplayName(priceDropdownProduct.name);
       const productWithDiscount = {
@@ -598,8 +598,7 @@ function App() {
   ];
 
   const mainTabs = [
-    { name: 'Companion', icon: <CompanionIcon />, text: <CompanionTabText /> },
-    { name: 'Home', icon: <HomeIcon />, text: <HomeTabText /> },
+    { name: 'Agent', icon: <CompanionIcon />, text: <CompanionTabText /> },
     { name: 'Me', icon: <MeIcon />, text: <MeTabText /> },
     { name: 'Carts', icon: <CartsIcon />, text: <CartsTabText /> },
   ];
@@ -620,15 +619,12 @@ function App() {
     if (category === 'Beauty' || category === 'Apparel' || category === 'Toys' || category === 'Shoes') {
       setActiveFilter('All');
     }
-    setActiveTab('Home');
+    setActiveTab('Agent');
   };
 
   const handleMainTabClick = (tabName) => {
     setActiveTab(tabName);
-    if (tabName === 'Home') {
-      setActiveCategory('Beauty');
-      setActiveFilter('All');
-    } else if (tabName === 'Me') {
+    if (tabName === 'Me') {
       setMeTabTrigger((prev) => prev + 1);
     }
   };
@@ -647,14 +643,14 @@ function App() {
 
   const handleCloseProductDetailOne = () => {
     setShowProductDetailOne(false);
-    setActiveTab('Home');
+    setActiveTab('Agent');
     setActiveCategory('Beauty');
     setActiveFilter('All');
   };
 
   const handleCloseProductDetailTwo = () => {
     setShowProductDetailTwo(false);
-    setActiveTab('Home');
+    setActiveTab('Agent');
     setActiveCategory('Beauty');
     setActiveFilter('All');
   };
@@ -686,42 +682,42 @@ function App() {
 
   const handleCloseProductDetailThree = () => {
     setShowProductDetailThree(false);
-    setActiveTab('Home');
+    setActiveTab('Agent');
     setActiveCategory('Toys');
     setActiveFilter('All');
   };
 
   const handleCloseProductDetailFour = () => {
     setShowProductDetailFour(false);
-    setActiveTab('Home');
+    setActiveTab('Agent');
     setActiveCategory('Toys');
     setActiveFilter('All');
   };
 
   const handleCloseProductDetailFive = () => {
     setShowProductDetailFive(false);
-    setActiveTab('Home');
+    setActiveTab('Agent');
     setActiveCategory('Apparel');
     setActiveFilter('All');
   };
 
   const handleCloseProductDetailSix = () => {
     setShowProductDetailSix(false);
-    setActiveTab('Home');
+    setActiveTab('Agent');
     setActiveCategory('Apparel');
     setActiveFilter('All');
   };
 
   const handleCloseProductDetailSeven = () => {
     setShowProductDetailSeven(false);
-    setActiveTab('Home');
+    setActiveTab('Agent');
     setActiveCategory('Shoes');
     setActiveFilter('All');
   };
 
   const handleCloseProductDetailEight = () => {
     setShowProductDetailEight(false);
-    setActiveTab('Home');
+    setActiveTab('Agent');
     setActiveCategory('Shoes');
     setActiveFilter('All');
   };
@@ -809,7 +805,7 @@ function App() {
           </div>
         </>
       )}
-      {activeTab === 'Companion' && (
+      {activeTab === 'Agent' && (
         <div className="scrollable-content companion-chat">
           <CompanionChatHeader />
           <div className="chat-messages">
@@ -875,7 +871,7 @@ function App() {
             <div className="tab-content">
               {tab.icon}
               {tab.text}
-              {tab.name === 'Companion' && notificationCount > 0 && (
+              {tab.name === 'Agent' && notificationCount > 0 && (
                 <div className="notification-badge">{notificationCount}</div>
               )}
             </div>
