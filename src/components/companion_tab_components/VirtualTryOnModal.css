@@ -1,11 +1,8 @@
 /* Virtual Try-On Modal Styles for USC Test App */
 
 .try-on-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: absolute;
+  inset: 0;
   background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;

@@ -6,8 +6,9 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative; /* scope all absolute/fixed overlays inside */
   background: #fff;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.12); /* subtle phone-frame look on desktop */
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.12);
 }
 
 .search-section {
@@ -166,9 +167,9 @@
   flex-shrink: 0;
 }
 
-/* Menu overlay (backdrop) */
+/* Menu overlay (backdrop) — scoped inside .mobile-container via position:relative */
 .menu-overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
   z-index: 200;
