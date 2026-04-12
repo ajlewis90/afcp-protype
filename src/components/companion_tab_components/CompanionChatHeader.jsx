@@ -6,11 +6,11 @@ const CompanionChatHeader = () => {
   return (
     <div className="companion-chat-header">
       <img
-        src="https://assets.api.uizard.io/api/cdn/stream/57326620-2a53-4912-9b70-e6a4f364b204.png"
-        alt="AFCP Avatar"
+        src="/shopper-agent-logo.png"
+        alt="Shopper Agent Avatar"
         className="companion-avatar"
       />
-      <h1 className="companion-title">AFCP</h1>
+      <h1 className="companion-title">Shopper Agent</h1>
     </div>
   );
 };

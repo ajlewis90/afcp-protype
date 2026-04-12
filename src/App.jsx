@@ -169,7 +169,7 @@ function App() {
   const [activeCategory, setActiveCategory] = useState('Beauty');
   const [activeFilter, setActiveFilter] = useState('All');
   const [messages, setMessages] = useState([
-    { isBot: true, text: "Hi, welcome to AFCP! I can help you find and buy what you're looking for. What are you shopping for today?", avatar: 'https://assets.api.uizard.io/api/cdn/stream/57326620-2a53-4912-9b70-e6a4f364b204.png' },
+    { isBot: true, text: "Hi, welcome to AFCP! I can help you find and buy what you're looking for. What are you shopping for today?", avatar: '/shopper-agent-logo.png' },
   ]);
   const [showProductDetailOne, setShowProductDetailOne] = useState(false);
   const [showProductDetailTwo, setShowProductDetailTwo] = useState(false);
@@ -311,7 +311,7 @@ function App() {
           {
             isBot: true,
             text: `I found some ${displayName} for you! You can tap the camera icon to try them on virtually.`,
-            avatar: 'https://assets.api.uizard.io/api/cdn/stream/57326620-2a53-4912-9b70-e6a4f364b204.png',
+            avatar: '/shopper-agent-logo.png',
             products
           },
         ]);
@@ -329,7 +329,7 @@ function App() {
             {
               isBot: true,
               text: followUpResponse,
-              avatar: 'https://assets.api.uizard.io/api/cdn/stream/57326620-2a53-4912-9b70-e6a4f364b204.png',
+              avatar: '/shopper-agent-logo.png',
               products
             },
           ]);
@@ -339,7 +339,7 @@ function App() {
             {
               isBot: true,
               text: followUpResponse,
-              avatar: 'https://assets.api.uizard.io/api/cdn/stream/57326620-2a53-4912-9b70-e6a4f364b204.png',
+              avatar: '/shopper-agent-logo.png',
             },
           ]);
         }
@@ -414,7 +414,7 @@ function App() {
             {
               isBot: true,
               text: `Great news! You asked for a price drop on "${displayName}" and now it's available for purchase at a lower price just for you!`,
-              avatar: 'https://assets.api.uizard.io/api/cdn/stream/57326620-2a53-4912-9b70-e6a4f364b204.png',
+              avatar: '/shopper-agent-logo.png',
               products: [productWithDiscount],
               showPriceComparison: true // Flag to show both original and discounted prices
             },
@@ -445,7 +445,7 @@ function App() {
           {
             isBot: true,
             text: `Great news! You asked for a price drop on "${displayName}" and now it's available for purchase at a lower price just for you!`,
-            avatar: 'https://assets.api.uizard.io/api/cdn/stream/57326620-2a53-4912-9b70-e6a4f364b204.png',
+            avatar: '/shopper-agent-logo.png',
             products: [productWithDiscount],
             showPriceComparison: true // Flag to show both original and discounted prices
           },
@@ -584,7 +584,7 @@ function App() {
         {
           isBot: true,
           text: `Great choice! I've added the ${product.name} to your cart. 🛒\n\nWould you like to see more items? I can help you find:\n• More business suits\n• Shirts and blouses\n• Jeans and trousers\n• Coats and jackets\n• Or anything else you're looking for!\n\nWhat would you like to explore next?`,
-          avatar: 'https://assets.api.uizard.io/api/cdn/stream/57326620-2a53-4912-9b70-e6a4f364b204.png'
+          avatar: '/shopper-agent-logo.png'
         }
       ]);
     }, 500);
