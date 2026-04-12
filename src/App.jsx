@@ -198,6 +198,7 @@ function App() {
   const [priceDropSettings, setPriceDropSettings] = useState({});
   const [priceDropNotifications, setPriceDropNotifications] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Enhanced chat response for follow-up questions
   const handleFollowUpResponse = (message) => {
@@ -597,11 +598,16 @@ function App() {
     'which is stylish and affordable...',
   ];
 
-  const mainTabs = [
-    { name: 'Agent', icon: <CompanionIcon />, text: <CompanionTabText /> },
-    { name: 'Me', icon: <MeIcon />, text: <MeTabText /> },
-    { name: 'Carts', icon: <CartsIcon />, text: <CartsTabText /> },
-  ];
+  const handleMenuMyCart = () => {
+    setMenuOpen(false);
+    setActiveTab('Carts');
+  };
+
+  const handleMenuForMe = () => {
+    setMenuOpen(false);
+    setActiveTab('Me');
+    setMeTabTrigger((prev) => prev + 1);
+  };
 
   const categoryTabs = [
     { name: 'Beauty', Icon: BeautyTabIcon, Text: BeautyCategoryText },
@@ -737,6 +743,20 @@ function App() {
 
   return (
     <div className="mobile-container">
+      {/* Side menu overlay */}
+      {menuOpen && (
+        <div className="menu-overlay" onClick={() => setMenuOpen(false)}>
+          <div className="side-menu" onClick={(e) => e.stopPropagation()}>
+            <button className="menu-close-btn" onClick={() => setMenuOpen(false)}>✕</button>
+            <button className="menu-item" onClick={() => setMenuOpen(false)}>My Account</button>
+            <button className="menu-item" onClick={() => setMenuOpen(false)}>My Orders</button>
+            <button className="menu-item" onClick={handleMenuMyCart}>My Cart</button>
+            <button className="menu-item" onClick={handleMenuForMe}>For Me</button>
+            <button className="menu-item menu-logout" onClick={() => setMenuOpen(false)}>Logout</button>
+          </div>
+        </div>
+      )}
+
       {activeTab === 'Home' && (
         <>
           <div className="search-section">
@@ -806,15 +826,18 @@ function App() {
         </>
       )}
       {activeTab === 'Agent' && (
-        <div className="scrollable-content companion-chat">
-          <CompanionChatHeader />
+        <div className="view-agent">
+          <CompanionChatHeader
+            onMenuToggle={() => setMenuOpen((o) => !o)}
+            notificationCount={notificationCount}
+          />
           <div className="chat-messages">
             {messages.map((message, index) => (
-              <ChatMessage 
-                key={index} 
-                isBot={message.isBot} 
-                text={message.text} 
-                avatar={message.avatar} 
+              <ChatMessage
+                key={index}
+                isBot={message.isBot}
+                text={message.text}
+                avatar={message.avatar}
                 products={message.products}
                 onProductClick={handleProductClick}
                 onTryOnClick={handleTryOnClick}
@@ -826,14 +849,33 @@ function App() {
         </div>
       )}
       {activeTab === 'Me' && (
-        <div className="scrollable-content">
-          <MeCard onMeTabChange={meTabTrigger} />
+        <div className="view-me">
+          <div className="view-header">
+            <button className="back-btn" onClick={() => setActiveTab('Agent')}>← Back</button>
+            <span className="view-header-title">For Me</span>
+            <button className="hamburger-btn" onClick={() => setMenuOpen((o) => !o)} aria-label="Open menu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+          <div className="view-body">
+            <MeCard onMeTabChange={meTabTrigger} />
+          </div>
         </div>
       )}
       {activeTab === 'Carts' && (
-        <>
-          <CartsText className="fixed-carts-text" />
-          <div className="scrollable-content">
+        <div className="view-carts">
+          <div className="view-header">
+            <button className="back-btn" onClick={() => setActiveTab('Agent')}>← Back</button>
+            <span className="view-header-title">My Cart</span>
+            <button className="hamburger-btn" onClick={() => setMenuOpen((o) => !o)} aria-label="Open menu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+          <div className="view-body">
             <div className="cart-row">
               <CartOneImage />
               <div className="cart-column">
@@ -859,25 +901,8 @@ function App() {
               <ViewBusinessThreeCartButton onClick={() => handleViewCart(cartThreeItems, 'cartThree')} />
             </div>
           </div>
-        </>
+        </div>
       )}
-      <div className="tab-bar">
-        {mainTabs.map((tab) => (
-          <button
-            key={tab.name}
-            className={`tab ${activeTab === tab.name ? 'active' : ''}`}
-            onClick={() => handleMainTabClick(tab.name)}
-          >
-            <div className="tab-content">
-              {tab.icon}
-              {tab.text}
-              {tab.name === 'Agent' && notificationCount > 0 && (
-                <div className="notification-badge">{notificationCount}</div>
-              )}
-            </div>
-          </button>
-        ))}
-      </div>
       {showProductDetailOne && (
         <ProductDetailOne 
           onClose={handleCloseProductDetailOne}
