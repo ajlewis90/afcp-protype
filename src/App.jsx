@@ -751,7 +751,7 @@ function App() {
             <button className="menu-item" onClick={() => setMenuOpen(false)}>My Account</button>
             <button className="menu-item" onClick={() => setMenuOpen(false)}>My Orders</button>
             <button className="menu-item" onClick={handleMenuMyCart}>My Cart</button>
-            <button className="menu-item" onClick={handleMenuForMe}>For Me</button>
+            <button className="menu-item" onClick={handleMenuForMe}>Suggestions For You</button>
             <button className="menu-item menu-logout" onClick={() => setMenuOpen(false)}>Logout</button>
           </div>
         </div>
@@ -852,7 +852,7 @@ function App() {
         <div className="view-me">
           <div className="view-header">
             <button className="back-btn" onClick={() => setActiveTab('Agent')}>← Back</button>
-            <span className="view-header-title">For Me</span>
+            <span className="view-header-title">Suggestions For You</span>
             <button className="hamburger-btn" onClick={() => setMenuOpen((o) => !o)} aria-label="Open menu">
               <span></span>
               <span></span>

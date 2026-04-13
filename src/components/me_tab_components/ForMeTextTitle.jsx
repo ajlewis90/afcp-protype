@@ -3,7 +3,7 @@ import React from 'react';
 import './ForMeTextTitle.css';
 
 const defaultProps = {
-  text: 'For Me',
+  text: 'Suggestions For You',
 };
 
 const ForMeTextTitle = (props) => {
