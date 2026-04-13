@@ -189,7 +189,7 @@ const ChatInput = ({ onSend }) => {
                 setIsFocused(false);
               }, 200);
             }}
-            placeholder="Message companion"
+            placeholder="Message agent"
             className="chat-input"
           />
           <button 

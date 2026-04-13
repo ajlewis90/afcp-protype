@@ -79,7 +79,7 @@ const ChatInput = ({ onSend }) => {
             onKeyPress={handleKeyPress}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-            placeholder="Message companion"
+            placeholder="Message agent"
             className="chat-input"
           />
           <button onClick={handleVoiceInput} className="voice-input-button">
