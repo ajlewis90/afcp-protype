@@ -39,7 +39,6 @@
   flex-direction: column;
   gap: 5px;
   padding: 8px;
-  margin-left: auto;
   flex-shrink: 0;
 }
 
@@ -67,3 +66,4 @@
   justify-content: center;
   border: 2px solid white;
 }
+

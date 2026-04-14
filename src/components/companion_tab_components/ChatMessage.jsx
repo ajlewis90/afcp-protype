@@ -1,7 +1,9 @@
 import React from 'react';
 import './ChatMessage.css';
 
-const ChatMessage = ({ isBot, text, avatar, products, onProductClick, onTryOnClick, showPriceComparison }) => {
+const ChatMessage = ({ isBot, text, avatar, products, onProductClick, onTryOnClick, onAddToCart, showPriceComparison }) => {
+  const [addedStates, setAddedStates] = React.useState({});
+
   const handleViewItem = (product) => {
     if (onProductClick) {
       onProductClick(product);
@@ -16,6 +18,24 @@ const ChatMessage = ({ isBot, text, avatar, products, onProductClick, onTryOnCli
     } else {
       console.log(`Try on:`, product);
     }
+  };
+
+  const handleAddToCart = (product) => {
+    if (onAddToCart) {
+      onAddToCart(product);
+      const key = product.id || product.name;
+      setAddedStates(prev => ({ ...prev, [key]: 'added' }));
+      setTimeout(() => {
+        setAddedStates(prev => ({ ...prev, [key]: 'add-more' }));
+      }, 2000);
+    }
+  };
+
+  const getCartButtonLabel = (product) => {
+    const state = addedStates[product.id || product.name];
+    if (state === 'added') return 'Added';
+    if (state === 'add-more') return 'Add more';
+    return 'Add to Cart';
   };
 
   return (
@@ -62,9 +82,14 @@ const ChatMessage = ({ isBot, text, avatar, products, onProductClick, onTryOnCli
                       <div className="product-price">{product.price}</div>
                     )}
                   </div>
-                  <button className="view-item-button" onClick={() => handleViewItem(product)}>
-                    View item
-                  </button>
+                  <div className="product-card-actions">
+                    <button className="view-item-button" onClick={() => handleViewItem(product)}>
+                      View item
+                    </button>
+                    <button className="add-to-cart-btn-chat" onClick={() => handleAddToCart(product)}>
+                      {getCartButtonLabel(product)}
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

@@ -180,14 +180,20 @@
   color: #28a745;
 }
 
-.view-item-button {
+.product-card-actions {
+  display: flex;
+  gap: 6px;
   width: 100%;
+}
+
+.view-item-button {
+  flex: 1;
   background: #007bff;
   color: white;
   border: none;
-  padding: 8px 12px;
+  padding: 8px 6px;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -195,6 +201,23 @@
 
 .view-item-button:hover {
   background: #0056b3;
+}
+
+.add-to-cart-btn-chat {
+  flex: 1;
+  background: #4B0082;
+  color: white;
+  border: none;
+  padding: 8px 6px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-to-cart-btn-chat:hover {
+  background: #3a0066;
 }
 
 /* Legacy product row styles for backwards compatibility */

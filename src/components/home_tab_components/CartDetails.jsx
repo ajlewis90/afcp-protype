@@ -24,8 +24,9 @@ const CartDetails = ({ cartItems, businessName, onClose }) => {
     creditAmount = creditApplied[businessName] ? 10 : 0; // Apply $10 credit if button clicked
   }
 
-  // Calculate subtotal
-  const subtotal = cartItems.reduce((sum, item) => sum + parseFloat(item.total.replace('$', '')), 0).toFixed(2);
+  // Calculate subtotal (handles comma-formatted prices like $1,499.99)
+  const parseCartPrice = (val) => parseFloat(String(val || 0).replace('$', '').replace(/,/g, '')) || 0;
+  const subtotal = cartItems.reduce((sum, item) => sum + parseCartPrice(item.total), 0).toFixed(2);
 
   // Handle Apply Credit button click
   const handleApplyCredit = () => {

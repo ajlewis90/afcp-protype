@@ -39,13 +39,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: rgba(75, 0, 130, 0.28);
   border-radius: 24px;
   transition: background-color 0.3s ease;
 }
 
 .toggle-slider.enabled {
-  background-color: #666;
+  background-color: #4B0082;
 }
 
 .toggle-knob {

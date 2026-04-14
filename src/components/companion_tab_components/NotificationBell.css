@@ -1,0 +1,92 @@
+.notification-bell-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.notification-bell-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.notification-bell-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: #ff4757;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+.notification-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  width: 240px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 300;
+  overflow: hidden;
+}
+
+.notification-panel-header {
+  padding: 10px 14px;
+  font-family: "Mulish", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #555;
+  border-bottom: 1px solid #f0f0f0;
+  background: #f9f9f9;
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid #f5f5f5;
+  gap: 8px;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-text {
+  font-family: "Quicksand", sans-serif;
+  font-size: 13px;
+  color: #333;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.notification-dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #aaa;
+  font-size: 14px;
+  padding: 2px 4px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.notification-dismiss:hover {
+  color: #333;
+}

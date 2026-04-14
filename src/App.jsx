@@ -36,6 +36,7 @@ import CartThreeBusinessPrice from './components/home_tab_components/CartThreeBu
 import ViewBusinessThreeCartButton from './components/home_tab_components/ViewBusinessThreeCartButton';
 import CartDetails from './components/home_tab_components/CartDetails';
 import CompanionChatHeader from './components/companion_tab_components/CompanionChatHeader';
+import NotificationBell from './components/companion_tab_components/NotificationBell';
 import ChatMessage from './components/companion_tab_components/ChatMessage';
 import ChatInput from './components/companion_tab_components/ChatInput';
 import VirtualTryOnModal from './components/companion_tab_components/VirtualTryOnModal';
@@ -190,6 +191,8 @@ function App() {
 
   // Cart state
   const [cartItems, setCartItems] = useState([]);
+  const [agentCartItems, setAgentCartItems] = useState([]);
+  const [editCartItemName, setEditCartItemName] = useState(null);
 
   // Price dropdown state (legacy - keeping for compatibility)
   const [priceDropdownProduct, setPriceDropdownProduct] = useState(null);
@@ -230,7 +233,7 @@ function App() {
   };
 
   // Simulated cart data for each business with business names
-  const cartOneItems = [
+  const [cartOneItems, setCartOneItems] = useState([
     {
       name: 'Meat Pies',
       price: '$5.00',
@@ -252,7 +255,7 @@ function App() {
       total: '$15.00',
       image: 'https://assets.api.uizard.io/api/cdn/stream/1a879764-a5c6-42cd-a1ea-2ac49295db9b.png',
     },
-  ];
+  ]);
 
   const cartTwoItems = [
     {
@@ -279,6 +282,7 @@ function App() {
     cartOne: 'Baker N Cakes',
     cartTwo: 'New Pharma',
     cartThree: 'The Warehouse',
+    agentCart: 'Shopper Agent Cart',
   };
 
   const handleSendMessage = (newMessage) => {
@@ -484,7 +488,11 @@ function App() {
       "Levi's 501 Original Fit Jeans": "Levi's 501 Original Fit Jeans",
       "Ralph Lauren Men's Polo Shirt": "Ralph Lauren Men's Polo Shirt",
       "Nike Air Force 1 '07 Sneaker": "Nike Air Force 1 '07 Sneaker",
-      "Adidas Ultraboost 5.0 Sneaker": "Adidas Ultraboost 5.0 Sneaker"
+      "Adidas Ultraboost 5.0 Sneaker": "Adidas Ultraboost 5.0 Sneaker",
+      // Offers for me products
+      "Retro Sneakers": "Retro Sneakers",
+      "Cute Stuffed Bear": "Cute Stuffed Bear",
+      "Coffee Machine": "Coffee Machine"
     };
     
     return productNameMap[productName] || productName;
@@ -509,7 +517,11 @@ function App() {
       "Levi's 501 Original Fit Jeans": "$70.00",
       "Ralph Lauren Men's Polo Shirt": "$50.00",
       "Nike Air Force 1 '07 Sneaker": "$335.00",
-      "Adidas Ultraboost 5.0 Sneaker": "$150.00"
+      "Adidas Ultraboost 5.0 Sneaker": "$150.00",
+      // Offers for me products
+      "Retro Sneakers": "$120.00",
+      "Cute Stuffed Bear": "$250.00",
+      "Coffee Machine": "$150.00"
     };
     
     return productPriceMap[productName] || "$0.00";
@@ -525,7 +537,11 @@ function App() {
       "Apparel Product One": "https://assets.api.uizard.io/api/cdn/stream/d59d7261-5ecd-4484-9551-44dc1d93fe45.png",
       "Apparel Product Two": "https://assets.api.uizard.io/api/cdn/stream/2f3b0fff-5715-4d07-8c8a-a6ad268192a1.png",
       "Shoes Product One": "https://assets.api.uizard.io/api/cdn/stream/0fd8e547-6f14-4dfc-8c01-42f39be7636c.png",
-      "Shoes Product Two": "https://assets.api.uizard.io/api/cdn/stream/027eb941-5abd-4ad4-8438-8237473aaa99.png"
+      "Shoes Product Two": "https://assets.api.uizard.io/api/cdn/stream/027eb941-5abd-4ad4-8438-8237473aaa99.png",
+      // Offers for me products
+      "Retro Sneakers": "https://assets.api.uizard.io/api/cdn/stream/92f317f8-23b6-42a2-8122-4d4f16fdf84f.png",
+      "Cute Stuffed Bear": "https://assets.api.uizard.io/api/cdn/stream/aacf3168-0a02-4b3b-b828-107f5bd8523c.png",
+      "Coffee Machine": "https://assets.api.uizard.io/api/cdn/stream/8f965042-a7ff-4f50-bd40-27caa9853275.png"
     };
     
     // Check specific product mappings first
@@ -548,32 +564,57 @@ function App() {
     return 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300';
   };
 
+  // Parse a price string like "$1,499.99" or "$89.99" safely to a number
+  const parsePrice = (priceStr) => {
+    if (!priceStr) return 0;
+    return parseFloat(String(priceStr).replace('$', '').replace(/,/g, '')) || 0;
+  };
+
   const handleAddToCart = (product) => {
     console.log('Added to cart:', product);
     
-    // Add item to cart
-    const cartItem = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      quantity: 1,
-      addedAt: new Date().toISOString()
-    };
-    
+    // Add to agent-specific cart so items are visible in My Cart as a dedicated row
+    setAgentCartItems(prev => {
+      // Exact match: same name AND same price → increment
+      const exactMatch = prev.find(item => item.name === product.name && item.price === product.price);
+      if (exactMatch) {
+        const newQty = exactMatch.quantity + 1;
+        return prev.map(item =>
+          item.name === product.name && item.price === product.price
+            ? { ...item, quantity: newQty, total: `$${(parsePrice(item.price) * newQty).toFixed(2)}` }
+            : item
+        );
+      }
+      // Same name but different (lower) price: update the existing item to the discounted price
+      const originalExists = prev.find(item => item.name === product.name);
+      if (originalExists) {
+        return prev.map(item =>
+          item.name === product.name
+            ? { ...item, price: product.price, total: `$${(parsePrice(product.price) * item.quantity).toFixed(2)}` }
+            : item
+        );
+      }
+      // No existing item with same name → add normally
+      return [
+        ...prev,
+        {
+          name: product.name,
+          price: product.price,
+          quantity: 1,
+          total: `$${parsePrice(product.price).toFixed(2)}`,
+          image: product.image
+        }
+      ];
+    });
+
     setCartItems(prevCart => {
       const existingItem = prevCart.find(item => item.id === product.id);
       if (existingItem) {
-        // Update quantity if item already exists
         return prevCart.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
-      } else {
-        // Add new item to cart
-        return [...prevCart, cartItem];
       }
+      return [...prevCart, { id: product.id, name: product.name, price: product.price, image: product.image, quantity: 1 }];
     });
     
     setShowTryOnModal(false);
@@ -728,6 +769,58 @@ function App() {
     setActiveFilter('All');
   };
 
+  const handleNotificationDismiss = (productName) => {
+    // Find the notification before removing it, then show it in agent chat
+    const notification = priceDropNotifications.find(n => n.productName === productName);
+    if (notification) {
+      const discountedPrice = calculateDiscountedPrice(notification.originalPrice);
+      const displayName = getProductDisplayName(notification.productName);
+      const productWithDiscount = {
+        name: displayName,
+        price: discountedPrice,
+        originalPrice: notification.originalPrice,
+        image: getProductImage(notification.productName),
+        id: Date.now()
+      };
+      setTimeout(() => {
+        setMessages(prev => [
+          ...prev,
+          {
+            isBot: true,
+            text: `Great news! You asked for a price drop on "${displayName}" and now it's available for purchase at a lower price just for you!`,
+            avatar: '/shopper-agent-logo.png',
+            products: [productWithDiscount],
+            showPriceComparison: true
+          }
+        ]);
+      }, 300);
+    }
+    setPriceDropNotifications(prev => {
+      const filtered = prev.filter(n => n.productName !== productName);
+      setNotificationCount(filtered.length);
+      return filtered;
+    });
+  };
+
+  const handleOffersAddToCart = (productName, price, image) => {
+    setAgentCartItems(prev => {
+      // Match by exact name AND price to avoid colliding with a discounted version
+      const existing = prev.find(item => item.name === productName && item.price === price);
+      if (existing) {
+        const newQty = existing.quantity + 1;
+        return prev.map(item =>
+          item.name === productName && item.price === price
+            ? { ...item, quantity: newQty, total: `$${(parsePrice(item.price) * newQty).toFixed(2)}` }
+            : item
+        );
+      }
+      return [
+        ...prev,
+        { name: productName, price, quantity: 1, total: price, image }
+      ];
+    });
+  };
+
   const handleViewCart = (cartItems, businessKey) => {
     setSelectedCartItems(cartItems);
     setSelectedBusiness(businessNames[businessKey]);
@@ -829,7 +922,8 @@ function App() {
         <div className="view-agent">
           <CompanionChatHeader
             onMenuToggle={() => setMenuOpen((o) => !o)}
-            notificationCount={notificationCount}
+            notifications={priceDropNotifications}
+            onNotificationDismiss={handleNotificationDismiss}
           />
           <div className="chat-messages">
             {messages.map((message, index) => (
@@ -841,6 +935,7 @@ function App() {
                 products={message.products}
                 onProductClick={handleProductClick}
                 onTryOnClick={handleTryOnClick}
+                onAddToCart={handleAddToCart}
                 showPriceComparison={message.showPriceComparison}
               />
             ))}
@@ -853,6 +948,7 @@ function App() {
           <div className="view-header">
             <button className="back-btn" onClick={() => setActiveTab('Agent')}>← Back</button>
             <span className="view-header-title">Suggestions For You</span>
+            <NotificationBell notifications={priceDropNotifications} onDismiss={handleNotificationDismiss} />
             <button className="hamburger-btn" onClick={() => setMenuOpen((o) => !o)} aria-label="Open menu">
               <span></span>
               <span></span>
@@ -860,7 +956,12 @@ function App() {
             </button>
           </div>
           <div className="view-body">
-            <MeCard onMeTabChange={meTabTrigger} />
+            <MeCard
+              onMeTabChange={meTabTrigger}
+              onPriceDropToggle={handlePriceDropToggle}
+              priceDropSettings={priceDropSettings}
+              onAddToCart={handleOffersAddToCart}
+            />
           </div>
         </div>
       )}
@@ -869,6 +970,7 @@ function App() {
           <div className="view-header">
             <button className="back-btn" onClick={() => setActiveTab('Agent')}>← Back</button>
             <span className="view-header-title">My Cart</span>
+            <NotificationBell notifications={priceDropNotifications} onDismiss={handleNotificationDismiss} />
             <button className="hamburger-btn" onClick={() => setMenuOpen((o) => !o)} aria-label="Open menu">
               <span></span>
               <span></span>
@@ -876,30 +978,24 @@ function App() {
             </button>
           </div>
           <div className="view-body">
-            <div className="cart-row">
-              <CartOneImage />
-              <div className="cart-column">
-                <CartOneBusinessName />
-                <CartOneBusinessPrice />
+            {agentCartItems.map((item, idx) => (
+              <div className="cart-row" key={`agent-item-${idx}`} style={{ marginTop: idx === 0 ? '0' : '12px' }}>
+                <img src={item.image} alt={item.name} style={{ width: '56px', height: '56px', borderRadius: '10px', objectFit: 'cover' }} />
+                <div className="cart-column">
+                  <div style={{ fontWeight: '600', fontSize: '15px' }}>{item.name}</div>
+                  <div style={{ color: '#555', fontSize: '14px', marginTop: '4px' }}>{item.total}{item.quantity > 1 ? ` (x${item.quantity})` : ''}</div>
+                </div>
+                <button
+                  onClick={() => setEditCartItemName(item.name)}
+                  style={{ background: '#4B0082', color: '#fff', border: 'none', borderRadius: '20px', padding: '8px 12px', fontWeight: '600', fontSize: '12px', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                >
+                  Edit Cart Item
+                </button>
               </div>
-              <ViewBusinessOneCartButton onClick={() => handleViewCart(cartOneItems, 'cartOne')} />
-            </div>
-            <div className="cart-row-two">
-              <CartTwoImage />
-              <div className="cart-column-two">
-                <CartTwoBusinessName />
-                <CartTwoBusinessPrice />
-              </div>
-              <ViewBusinessTwoCartButton onClick={() => handleViewCart(cartTwoItems, 'cartTwo')} />
-            </div>
-            <div className="cart-row-three">
-              <CartThreeImage />
-              <div className="cart-column-three">
-                <CartThreeBusinessName />
-                <CartThreeBusinessPrice />
-              </div>
-              <ViewBusinessThreeCartButton onClick={() => handleViewCart(cartThreeItems, 'cartThree')} />
-            </div>
+            ))}
+            {agentCartItems.length === 0 && (
+              <div style={{ textAlign: 'center', color: '#999', marginTop: '40px', fontSize: '15px' }}>No items in cart yet.</div>
+            )}
           </div>
         </div>
       )}
@@ -973,6 +1069,52 @@ function App() {
           onAddToCart={handleAddToCart}
         />
       )}
+      {editCartItemName && (() => {
+        const editItem = agentCartItems.find(i => i.name === editCartItemName);
+        if (!editItem) { return null; }
+        return (
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 400, display: 'flex', alignItems: 'flex-end' }}>
+            <div style={{ background: '#fff', borderRadius: '20px 20px 0 0', padding: '24px', width: '100%', boxSizing: 'border-box' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <span style={{ fontWeight: '700', fontSize: '18px' }}>Edit Cart Item</span>
+                <button onClick={() => setEditCartItemName(null)} style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', lineHeight: 1, color: '#333' }}>×</button>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
+                <img src={editItem.image} alt={editItem.name} style={{ width: '68px', height: '68px', borderRadius: '12px', objectFit: 'cover' }} />
+                <div>
+                  <div style={{ fontWeight: '600', fontSize: '16px' }}>{editItem.name}</div>
+                  <div style={{ color: '#777', fontSize: '14px', marginTop: '4px' }}>{editItem.price} each</div>
+                </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '28px' }}>
+                <span style={{ fontWeight: '600', fontSize: '15px' }}>Quantity:</span>
+                <button
+                  onClick={() => {
+                    if (editItem.quantity <= 1) return;
+                    setAgentCartItems(prev => prev.map(i => i.name === editItem.name ? { ...i, quantity: i.quantity - 1, total: `$${(parsePrice(i.price) * (i.quantity - 1)).toFixed(2)}` } : i));
+                  }}
+                  style={{ width: '36px', height: '36px', borderRadius: '50%', border: '2px solid #4B0082', background: '#fff', color: '#4B0082', fontSize: '20px', fontWeight: '700', cursor: editItem.quantity <= 1 ? 'not-allowed' : 'pointer', opacity: editItem.quantity <= 1 ? 0.4 : 1 }}
+                >−</button>
+                <span style={{ fontSize: '20px', fontWeight: '700', minWidth: '28px', textAlign: 'center' }}>{editItem.quantity}</span>
+                <button
+                  onClick={() => setAgentCartItems(prev => prev.map(i => i.name === editItem.name ? { ...i, quantity: i.quantity + 1, total: `$${(parsePrice(i.price) * (i.quantity + 1)).toFixed(2)}` } : i))}
+                  style={{ width: '36px', height: '36px', borderRadius: '50%', border: 'none', background: '#4B0082', color: '#fff', fontSize: '20px', fontWeight: '700', cursor: 'pointer' }}
+                >+</button>
+              </div>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  onClick={() => { setAgentCartItems(prev => prev.filter(i => i.name !== editItem.name)); setEditCartItemName(null); }}
+                  style={{ flex: 1, padding: '13px', background: '#fff', color: '#e53935', border: '2px solid #e53935', borderRadius: '24px', fontWeight: '700', fontSize: '15px', cursor: 'pointer' }}
+                >Remove Item</button>
+                <button
+                  onClick={() => setEditCartItemName(null)}
+                  style={{ flex: 1, padding: '13px', background: '#4B0082', color: '#fff', border: 'none', borderRadius: '24px', fontWeight: '700', fontSize: '15px', cursor: 'pointer' }}
+                >Done</button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

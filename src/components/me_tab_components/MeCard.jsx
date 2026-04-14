@@ -6,22 +6,19 @@ import GetRewardsIcon from './GetRewardsIcon';
 import GiftsSurprisesIcon from './GiftsSurprisesIcon';
 import OffersForMeText from './OffersForMeText';
 import MyReviewsText from './MyReviewsText';
-import GetRewardsText from './GetRewardsText';
+import GetRewardsText   from './GetRewardsText';
 import GiftsSurprisesText from './GiftsSurprisesText';
 import OffersProductImageOne from './OffersProductImageOne';
 import OffersProductTextOne from './OffersProductTextOne';
 import OffersProductOriginalPriceTextOne from './OffersProductOriginalPriceTextOne';
-import OffersProductDiscountedPriceTextOne from './OffersProductDiscountedPriceTextOne';
 import AddToCartButtonOne from './AddToCartButtonOne';
 import OffersProductImageTwo from './OffersProductImageTwo';
 import OffersProductTextTwo from './OffersProductTextTwo';
 import OffersProductOriginalPriceTextTwo from './OffersProductOriginalPriceTextTwo';
-import OffersProductDiscountedPriceTextTwo from './OffersProductDiscountedPriceTextTwo';
 import AddToCartButtonTwo from './AddToCartButtonTwo';
 import OffersProductImageThree from './OffersProductImageThree';
 import OffersProductTextThree from './OffersProductTextThree';
 import OffersProductOriginalPriceTextThree from './OffersProductOriginalPriceTextThree';
-import OffersProductDiscountedPriceTextThree from './OffersProductDiscountedPriceTextThree';
 import AddToCartButtonThree from './AddToCartButtonThree';
 import ReviewImageOne from './ReviewImageOne';
 import ReviewProductTextOne from './ReviewProductTextOne';
@@ -63,9 +60,21 @@ import ReviewRatingFour from './ReviewRatingFour';
 import ReviewTextFour from './ReviewTextFour';
 import ReviewLikesFour from './ReviewLikesFour';
 import ReviewDislikesFour from './ReviewDislikesFour';
+import PriceDropToggle from '../home_tab_components/PriceDropToggle';
 
-const MeCard = ({ onMeTabChange }) => {
+const OFFERS_PRODUCTS = {
+  'Retro Sneakers':   { price: '$120.00', image: 'https://assets.api.uizard.io/api/cdn/stream/92f317f8-23b6-42a2-8122-4d4f16fdf84f.png' },
+  'Cute Stuffed Bear':{ price: '$250.00', image: 'https://assets.api.uizard.io/api/cdn/stream/aacf3168-0a02-4b3b-b828-107f5bd8523c.png' },
+  'Coffee Machine':   { price: '$150.00', image: 'https://assets.api.uizard.io/api/cdn/stream/8f965042-a7ff-4f50-bd40-27caa9853275.png' },
+};
+
+const MeCard = ({ onMeTabChange, onPriceDropToggle, priceDropSettings, onAddToCart }) => {
   const [activeMeTab, setActiveMeTab] = React.useState('Offers for me');
+  const [buttonStates, setButtonStates] = React.useState({
+    'Retro Sneakers': 'idle',
+    'Cute Stuffed Bear': 'idle',
+    'Coffee Machine': 'idle',
+  });
 
   // Reset to "Offers for me" whenever the Me tab is activated
   useEffect(() => {
@@ -78,7 +87,21 @@ const MeCard = ({ onMeTabChange }) => {
 
   const handleAddToCartClick = (productName) => (e) => {
     e.stopPropagation();
-    console.log(`Added ${productName} to cart`);
+    const product = OFFERS_PRODUCTS[productName];
+    if (onAddToCart && product) {
+      onAddToCart(productName, product.price, product.image);
+      setButtonStates(prev => ({ ...prev, [productName]: 'added' }));
+      setTimeout(() => {
+        setButtonStates(prev => ({ ...prev, [productName]: 'add-more' }));
+      }, 2000);
+    }
+  };
+
+  const getButtonLabel = (productName) => {
+    const state = buttonStates[productName];
+    if (state === 'added') return 'Added';
+    if (state === 'add-more') return 'Add more';
+    return 'Add to Cart';
   };
 
   return (
@@ -120,11 +143,16 @@ const MeCard = ({ onMeTabChange }) => {
               <OffersProductImageOne />
               <OffersProductTextOne />
               <OffersProductOriginalPriceTextOne />
+              <PriceDropToggle
+                productName="Retro Sneakers"
+                originalPrice="$120.00"
+                isEnabled={priceDropSettings?.["Retro Sneakers"] || false}
+                onToggle={onPriceDropToggle}
+              />
               <div className="price-and-button-row">
-                <OffersProductDiscountedPriceTextOne />
                 <div className="spacer" />
                 <div onClick={handleAddToCartClick('Retro Sneakers')}>
-                  <AddToCartButtonOne />
+                  <AddToCartButtonOne label={getButtonLabel('Retro Sneakers')} />
                 </div>
               </div>
             </div>
@@ -132,11 +160,16 @@ const MeCard = ({ onMeTabChange }) => {
               <OffersProductImageTwo />
               <OffersProductTextTwo />
               <OffersProductOriginalPriceTextTwo />
+              <PriceDropToggle
+                productName="Cute Stuffed Bear"
+                originalPrice="$250.00"
+                isEnabled={priceDropSettings?.["Cute Stuffed Bear"] || false}
+                onToggle={onPriceDropToggle}
+              />
               <div className="price-and-button-row">
-                <OffersProductDiscountedPriceTextTwo />
                 <div className="spacer" />
                 <div onClick={handleAddToCartClick('Cute Stuffed Bear')}>
-                  <AddToCartButtonTwo />
+                  <AddToCartButtonTwo label={getButtonLabel('Cute Stuffed Bear')} />
                 </div>
               </div>
             </div>
@@ -144,11 +177,16 @@ const MeCard = ({ onMeTabChange }) => {
               <OffersProductImageThree />
               <OffersProductTextThree />
               <OffersProductOriginalPriceTextThree />
+              <PriceDropToggle
+                productName="Coffee Machine"
+                originalPrice="$150.00"
+                isEnabled={priceDropSettings?.["Coffee Machine"] || false}
+                onToggle={onPriceDropToggle}
+              />
               <div className="price-and-button-row">
-                <OffersProductDiscountedPriceTextThree />
                 <div className="spacer" />
                 <div onClick={handleAddToCartClick('Coffee Machine')}>
-                  <AddToCartButtonThree />
+                  <AddToCartButtonThree label={getButtonLabel('Coffee Machine')} />
                 </div>
               </div>
             </div>
