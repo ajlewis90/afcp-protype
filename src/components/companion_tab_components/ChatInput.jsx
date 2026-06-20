@@ -9,8 +9,8 @@ const ChatInput = ({ onSend }) => {
   const [isVoiceSupported, setIsVoiceSupported] = useState(false);
   const recognitionRef = useRef(null);
   const onSendRef = useRef(onSend);
-  
-  // Update the ref when onSend changes
+  const textareaRef = useRef(null);
+
   useEffect(() => {
     onSendRef.current = onSend;
   }, [onSend]);
@@ -22,136 +22,133 @@ const ChatInput = ({ onSend }) => {
     'which is stylish and affordable...',
   ];
 
+  const autoResize = () => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+  };
+
   const handleInputChange = (e) => {
     const value = e.target.value;
-    console.log('handleInputChange - New value:', value);
     setInput(value);
+    autoResize();
 
     if (value.toLowerCase().includes('dress') || value.toLowerCase().includes('beauty')) {
-      const filteredSuggestions = suggestionOptions.filter(suggestion =>
-        suggestion.toLowerCase().includes(value.toLowerCase())
+      const filtered = suggestionOptions.filter(s =>
+        s.toLowerCase().includes(value.toLowerCase())
       );
-      setSuggestions(filteredSuggestions.length > 0 ? filteredSuggestions : suggestionOptions);
-      console.log('handleInputChange - Suggestions updated:', filteredSuggestions.length > 0 ? filteredSuggestions : suggestionOptions);
+      setSuggestions(filtered.length > 0 ? filtered : suggestionOptions);
     } else {
       setSuggestions([]);
-      console.log('handleInputChange - Suggestions cleared');
     }
   };
 
   const handleSend = () => {
     if (input.trim()) {
-      console.log('handleSend - Sending message:', input);
-      onSend(input);
+      onSend(input.trim());
       setInput('');
       setSuggestions([]);
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.style.height = 'auto';
+        }
+      }, 0);
     }
   };
 
-  // Check if speech recognition is supported
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
       setIsVoiceSupported(true);
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
-      recognitionRef.current.lang = 'en-US';
-      
-      recognitionRef.current.onstart = () => {
-        console.log('Voice recognition started');
-        setIsListening(true);
-      };
-      
-      recognitionRef.current.onresult = (event) => {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      recognition.onstart = () => setIsListening(true);
+
+      recognition.onresult = (event) => {
         const transcript = event.results?.[0]?.[0]?.transcript;
-        if (transcript) {
-          console.log('Voice recognition result:', transcript);
+        if (transcript?.trim()) {
           setInput(transcript);
-          // Automatically send the voice message
           setTimeout(() => {
-            if (transcript.trim()) {
-              onSendRef.current(transcript);
-              setInput('');
-              setSuggestions([]);
-            }
-          }, 100);
-        } else {
-          console.log('No transcript received from voice recognition');
+            onSendRef.current(transcript.trim());
+            setInput('');
+            setSuggestions([]);
+          }, 150);
         }
       };
-      
-      recognitionRef.current.onerror = (event) => {
-        console.error('Voice recognition error:', event.error);
+
+      recognition.onerror = (event) => {
         setIsListening(false);
         if (event.error === 'not-allowed') {
-          alert('Microphone access denied. Please allow microphone access and try again.');
-        } else if (event.error === 'network') {
-          alert('Network error occurred during voice recognition.');
-        } else {
-          alert('Voice recognition error occurred. Please try again.');
+          alert('Microphone access was denied. Please allow microphone access in your browser settings and try again.');
+        } else if (event.error === 'no-speech') {
+          alert('No speech detected. Please try speaking again.');
+        } else if (event.error !== 'aborted') {
+          alert(`Voice error: ${event.error}. Please try again.`);
         }
       };
-      
-      recognitionRef.current.onend = () => {
-        console.log('Voice recognition ended');
-        setIsListening(false);
-      };
+
+      recognition.onend = () => setIsListening(false);
+
+      recognitionRef.current = recognition;
     } else {
-      console.log('Speech recognition not supported');
       setIsVoiceSupported(false);
     }
-    
-    // Cleanup function
+
     return () => {
-      if (recognitionRef.current && isListening) {
-        try {
-          recognitionRef.current.stop();
-        } catch (error) {
-          console.log('Recognition already stopped');
-        }
-      }
+      try { recognitionRef.current?.stop(); } catch (_) {}
     };
-  }, []); // Empty dependency array to prevent re-initialization
+  }, []);
 
   const handleVoiceInput = () => {
     if (!isVoiceSupported) {
-      alert('Voice recognition is not supported in your browser. Please use Chrome, Safari, or Edge.');
+      alert('Voice recognition requires Chrome, Edge, or Safari. Please switch browsers and try again.');
       return;
     }
-    
     if (isListening) {
-      // Stop listening
-      recognitionRef.current.stop();
+      try { recognitionRef.current.stop(); } catch (_) {}
       setIsListening(false);
     } else {
-      // Start listening
-      try {
-        recognitionRef.current.start();
-      } catch (error) {
-        console.error('Error starting voice recognition:', error);
-        alert('Failed to start voice recognition. Please try again.');
+      try { recognitionRef.current.start(); } catch (_) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+          recognitionRef.current = new SpeechRecognition();
+          recognitionRef.current.continuous = false;
+          recognitionRef.current.interimResults = false;
+          recognitionRef.current.lang = 'en-US';
+          recognitionRef.current.onstart = () => setIsListening(true);
+          recognitionRef.current.onend = () => setIsListening(false);
+          recognitionRef.current.onresult = (event) => {
+            const transcript = event.results?.[0]?.[0]?.transcript;
+            if (transcript?.trim()) {
+              setInput(transcript);
+              setTimeout(() => {
+                onSendRef.current(transcript.trim());
+                setInput('');
+              }, 150);
+            }
+          };
+          recognitionRef.current.onerror = () => setIsListening(false);
+          recognitionRef.current.start();
+        }
       }
     }
   };
 
   const handleSuggestionClick = (suggestion) => {
-    console.log('handleSuggestionClick - Clicked suggestion:', suggestion);
-    console.log('handleSuggestionClick - Current input before update:', input);
-
     const newInput = input ? `${input} ${suggestion}` : suggestion;
-    console.log('handleSuggestionClick - New input after append:', newInput);
-
     setInput(newInput);
     setSuggestions([]);
-    console.log('handleSuggestionClick - Suggestions cleared');
-
-    document.querySelector('.chat-input').focus();
+    textareaRef.current?.focus();
+    setTimeout(autoResize, 0);
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      console.log('handleKeyPress - Enter pressed');
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
       handleSend();
     }
   };
@@ -165,7 +162,7 @@ const ChatInput = ({ onSend }) => {
               <div
                 key={index}
                 className="suggestion-item"
-                onClick={() => handleSuggestionClick(suggestion)}
+                onMouseDown={() => handleSuggestionClick(suggestion)}
               >
                 <span className="suggestion-icon">Q</span>
                 {suggestion}
@@ -174,29 +171,21 @@ const ChatInput = ({ onSend }) => {
           </div>
         )}
         <div className="chat-input-with-voice">
-          <input
-            type="text"
+          <textarea
+            ref={textareaRef}
             value={input}
             onChange={handleInputChange}
-            onKeyPress={handleKeyPress}
-            onFocus={() => {
-              console.log('Input focused');
-              setIsFocused(true);
-            }}
-            onBlur={() => {
-              setTimeout(() => {
-                console.log('Input blurred');
-                setIsFocused(false);
-              }, 200);
-            }}
+            onKeyDown={handleKeyDown}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setTimeout(() => setIsFocused(false), 200)}
             placeholder="What are you looking for?"
             className="chat-input"
+            rows={1}
           />
-          <button 
-            onClick={handleVoiceInput} 
-            className={`voice-input-button ${isListening ? 'listening' : ''} ${!isVoiceSupported ? 'disabled' : ''}`}
-            disabled={!isVoiceSupported}
-            title={isListening ? 'Stop voice input' : 'Start voice input'}
+          <button
+            onClick={handleVoiceInput}
+            className={`voice-input-button ${isListening ? 'listening' : ''}`}
+            title={isListening ? 'Stop listening' : 'Voice input'}
           >
             {isListening ? '🔴' : '🎙️'}
           </button>

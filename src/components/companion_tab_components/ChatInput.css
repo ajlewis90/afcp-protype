@@ -1,6 +1,5 @@
-/* src/components/companion_tab_components/ChatInput.css (Daxedax version) */
 .chat-input-container {
-  padding: 20px;
+  padding: 12px 16px;
   background-color: #fff;
   border-top: 1px solid #4B0082;
   position: relative;
@@ -9,26 +8,35 @@
 .chat-input-wrapper {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+  gap: 10px;
 }
 
 .chat-input-with-voice {
   position: relative;
   flex-grow: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .chat-input {
   flex-grow: 1;
-  padding: 10px 40px 10px 15px;
+  padding: 10px 42px 10px 15px;
   border: 1px solid #ddd;
   border-radius: 20px;
   font-size: 14px;
   font-family: "Quicksand", sans-serif;
-  color: #666;
+  color: #333;
   outline: none;
   background-color: #fff;
+  resize: none;
+  overflow-y: auto;
+  line-height: 1.5;
+  min-height: 42px;
+  max-height: 140px;
+  box-sizing: border-box;
+  display: block;
+  transition: border-color 0.15s ease;
 }
 
 .chat-input:focus {
@@ -38,6 +46,7 @@
 .voice-input-button {
   position: absolute;
   right: 10px;
+  bottom: 9px;
   background: none;
   border: none;
   font-size: 18px;
@@ -48,37 +57,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 1;
 }
 
 .voice-input-button:hover {
-  color: #4caf50;
+  color: #4B0082;
 }
 
 .voice-input-button.listening {
-  animation: pulse 1.5s ease-in-out infinite alternate;
-  color: #f44336;
-}
-
-.voice-input-button.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.voice-input-button.disabled:hover {
-  color: #666;
+  animation: pulse 1.2s ease-in-out infinite alternate;
 }
 
 @keyframes pulse {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.1);
-  }
+  from { transform: scale(1); }
+  to   { transform: scale(1.2); }
 }
 
 .send-button {
-  margin-left: 10px;
+  flex-shrink: 0;
   padding: 10px 20px;
   background-color: #4B0082;
   color: white;
@@ -86,24 +82,27 @@
   border-radius: 20px;
   font-size: 14px;
   font-family: "Quicksand", sans-serif;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   outline: none;
+  height: 42px;
+  align-self: flex-end;
+  transition: background-color 0.15s ease;
 }
 
 .send-button:hover {
-  background-color: #4B0010;
+  background-color: #360060;
 }
 
 .suggestions {
   position: absolute;
-  bottom: 60px;
+  bottom: calc(100% + 8px);
   left: 0;
   right: 0;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
@@ -112,7 +111,7 @@
 .suggestion-item {
   padding: 10px 15px;
   font-size: 14px;
-  font-family: "Mulish", sans-serif;
+  font-family: "Quicksand", sans-serif;
   color: #333;
   cursor: pointer;
   display: flex;
@@ -121,11 +120,11 @@
 }
 
 .suggestion-item:hover {
-  background-color: #f5f5f5;
+  background-color: #f5f0ff;
 }
 
 .suggestion-icon {
-  font-size: 12px;
+  font-size: 11px;
   font-family: "Quicksand", sans-serif;
   color: #666;
   background-color: #f0f0f0;
@@ -135,4 +134,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
