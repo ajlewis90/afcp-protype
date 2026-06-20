@@ -1,0 +1,265 @@
+.orders-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+  z-index: 400;
+  display: flex;
+  align-items: flex-end;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.orders-backdrop.orders-visible {
+  opacity: 1;
+}
+
+.orders-sheet {
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-height: 90%;
+  overflow-y: auto;
+  animation: slideUpSheet 0.34s cubic-bezier(0.34, 1.26, 0.64, 1);
+  padding-bottom: 32px;
+}
+
+@keyframes slideUpSheet {
+  from { transform: translateY(100%); opacity: 0.6; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.sheet-handle {
+  width: 40px;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  margin: 12px auto 0;
+}
+
+.orders-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 10px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.orders-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111;
+  margin: 0;
+  font-family: 'Mulish', sans-serif;
+}
+
+.orders-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orders-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+}
+
+.orders-empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.orders-empty p {
+  font-size: 17px;
+  font-weight: 700;
+  color: #444;
+  margin: 0 0 6px;
+}
+
+.orders-empty span {
+  font-size: 13px;
+  color: #aaa;
+}
+
+.orders-list {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.order-card {
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.order-card-num {
+  font-size: 13px;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 2px;
+}
+
+.order-card-date {
+  font-size: 11px;
+  color: #aaa;
+}
+
+.order-status-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+
+.status-confirmed  { background: #f0ebf8; color: #4B0082; }
+.status-processing { background: #fff3cd; color: #856404; }
+.status-shipped    { background: #cce5ff; color: #004085; }
+.status-delivered  { background: #d4edda; color: #155724; }
+
+/* Progress bar */
+.order-progress {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.progress-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 800;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.progress-dot.done {
+  background: #4B0082;
+}
+
+.progress-label {
+  font-size: 8px;
+  color: #bbb;
+  font-weight: 600;
+  text-align: center;
+  max-width: 44px;
+  line-height: 1.2;
+}
+
+.progress-label.done {
+  color: #4B0082;
+}
+
+.progress-line {
+  flex: 1;
+  height: 2px;
+  background: #e0e0e0;
+  margin: 0 2px;
+  margin-bottom: 14px;
+  transition: background 0.2s;
+}
+
+.progress-line.done {
+  background: #4B0082;
+}
+
+/* Order items */
+.order-items-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.order-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.order-preview-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #eee;
+  flex-shrink: 0;
+}
+
+.order-preview-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.order-preview-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.order-preview-option {
+  font-size: 11px;
+  color: #4B0082;
+  font-weight: 600;
+}
+
+.order-preview-meta {
+  font-size: 11px;
+  color: #999;
+}
+
+.order-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ececec;
+  padding-top: 10px;
+}
+
+.order-total-label {
+  font-size: 12px;
+  color: #888;
+  font-weight: 600;
+}
+
+.order-total-val {
+  font-size: 15px;
+  font-weight: 900;
+  color: #4B0082;
+  font-family: 'Mulish', sans-serif;
+}

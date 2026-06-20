@@ -1,0 +1,297 @@
+.checkout-sheet {
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-height: 88%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  animation: slideUpSheet 0.3s cubic-bezier(0.34, 1.26, 0.64, 1);
+}
+
+.checkout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 20px 14px;
+  border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.checkout-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111;
+  margin: 0;
+  font-family: 'Mulish', sans-serif;
+}
+
+.checkout-summary-box {
+  background: #fafafa;
+  margin: 16px 20px;
+  border-radius: 14px;
+  padding: 14px 16px;
+  border: 1px solid #f0f0f0;
+}
+
+.checkout-summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.checkout-summary-row:last-child {
+  margin-bottom: 0;
+}
+
+.checkout-free {
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+.checkout-divider {
+  height: 1px;
+  background: #eee;
+  margin: 8px 0;
+}
+
+.checkout-total-row {
+  font-weight: 700;
+  font-size: 16px;
+  color: #111;
+}
+
+.checkout-total-val {
+  color: #4B0082;
+  font-size: 18px;
+  font-weight: 900;
+  font-family: 'Mulish', sans-serif;
+}
+
+.checkout-payment-section {
+  padding: 0 20px;
+}
+
+.checkout-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #999;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.apple-pay-btn {
+  width: 100%;
+  padding: 14px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  transition: opacity 0.2s;
+}
+
+.apple-pay-btn:disabled {
+  opacity: 0.7;
+}
+
+.apple-pay-inner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.apple-logo {
+  font-size: 21px;
+  line-height: 1;
+}
+
+.google-pay-btn {
+  width: 100%;
+  padding: 14px;
+  background: #fff;
+  color: #111;
+  border: 1.5px solid #ddd;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  transition: background 0.2s;
+}
+
+.google-pay-btn:disabled {
+  opacity: 0.7;
+}
+
+.google-pay-inner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.g-logo {
+  font-weight: 800;
+  font-size: 20px;
+  background: linear-gradient(135deg, #4285F4, #EA4335, #FBBC05, #34A853);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.checkout-or {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.or-line {
+  flex: 1;
+  height: 1px;
+  background: #eee;
+}
+
+.or-text {
+  font-size: 12px;
+  color: #bbb;
+  white-space: nowrap;
+}
+
+.saved-card-btn {
+  width: 100%;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1.5px solid #ddd;
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  transition: border-color 0.2s, background 0.2s;
+  margin-bottom: 6px;
+}
+
+.saved-card-btn:hover:not(:disabled) {
+  border-color: #4B0082;
+  background: #fdfaff;
+}
+
+.saved-card-btn:disabled {
+  opacity: 0.7;
+}
+
+.saved-card-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-chip {
+  width: 32px;
+  height: 24px;
+  background: linear-gradient(135deg, #d4a017, #f5c842);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.chip-inner {
+  width: 18px;
+  height: 14px;
+  border: 1.5px solid rgba(0,0,0,0.25);
+  border-radius: 2px;
+  background: linear-gradient(135deg, #c8930a, #f0c030);
+}
+
+.card-details {
+  text-align: left;
+}
+
+.card-num {
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+  letter-spacing: 1px;
+  font-family: monospace;
+}
+
+.card-exp {
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 2px;
+}
+
+.card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.card-pay-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #4B0082;
+}
+
+.visa-badge {
+  font-size: 11px;
+  font-weight: 900;
+  color: #1a1f71;
+  letter-spacing: 1.5px;
+  border: 1.5px solid #1a1f71;
+  border-radius: 3px;
+  padding: 1px 5px;
+  line-height: 1.3;
+}
+
+.checkout-secure {
+  text-align: center;
+  font-size: 11px;
+  color: #bbb;
+  margin: 16px 20px 28px;
+}
+
+.pay-spinner {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border: 3px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.pay-spinner-dark {
+  border-color: rgba(0,0,0,0.15);
+  border-top-color: #4B0082;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
