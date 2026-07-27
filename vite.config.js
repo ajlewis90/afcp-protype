@@ -12,7 +12,13 @@ export default defineConfig({
     // Ensure static files are served correctly
     fs: {
       strict: false
-    }
+    },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    }    
   },
   
   // Add this to ensure public directory is served

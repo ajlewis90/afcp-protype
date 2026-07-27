@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { STATUS_STEPS, getOrderStatus } from '../../services/orderMeta';
 import './OrdersSheet.css';
-
-const STATUS_STEPS = ['Confirmed', 'Processing', 'Shipped', 'Delivered'];
 
 const getStatusStep = (status) => STATUS_STEPS.indexOf(status);
 
-const OrdersSheet = ({ orders, onClose }) => {
-  const [show, setShow] = React.useState(false);
+const STATUS_BADGE_CLASS = {
+  'Confirmed':        'status-confirmed',
+  'Processed':        'status-processed',
+  'Shipped':          'status-shipped',
+  'Out for Delivery': 'status-ofd',
+  'Delivered':        'status-delivered',
+};
 
-  React.useEffect(() => {
+const OrdersSheet = ({ orders, onClose, onViewDetail }) => {
+  const [show, setShow] = useState(false);
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
     const t = requestAnimationFrame(() => setShow(true));
-    return () => cancelAnimationFrame(t);
+    // Re-compute statuses every 5 s so UI stays live
+    const interval = setInterval(() => setTick(n => n + 1), 5000);
+    return () => { cancelAnimationFrame(t); clearInterval(interval); };
   }, []);
 
   return (
@@ -31,19 +41,22 @@ const OrdersSheet = ({ orders, onClose }) => {
         ) : (
           <div className="orders-list">
             {orders.map((order) => {
-              const step = getStatusStep(order.status);
+              const status = getOrderStatus(order.createdAt);
+              const step   = getStatusStep(status);
               return (
                 <div key={order.id} className="order-card">
+                  {/* Header */}
                   <div className="order-card-header">
                     <div>
                       <div className="order-card-num">Order #{order.id}</div>
                       <div className="order-card-date">{order.date}</div>
                     </div>
-                    <span className={`order-status-badge status-${order.status.toLowerCase()}`}>
-                      {order.status}
+                    <span className={`order-status-badge ${STATUS_BADGE_CLASS[status] || 'status-confirmed'}`}>
+                      {status}
                     </span>
                   </div>
 
+                  {/* 5-step progress tracker */}
                   <div className="order-progress">
                     {STATUS_STEPS.map((s, i) => (
                       <React.Fragment key={s}>
@@ -51,7 +64,9 @@ const OrdersSheet = ({ orders, onClose }) => {
                           <div className={`progress-dot ${i <= step ? 'done' : ''}`}>
                             {i < step ? '✓' : i === step ? '●' : ''}
                           </div>
-                          <span className={`progress-label ${i <= step ? 'done' : ''}`}>{s}</span>
+                          <span className={`progress-label ${i <= step ? 'done' : ''}`}>
+                            {s === 'Out for Delivery' ? 'Out for\nDelivery' : s}
+                          </span>
                         </div>
                         {i < STATUS_STEPS.length - 1 && (
                           <div className={`progress-line ${i < step ? 'done' : ''}`} />
@@ -60,6 +75,7 @@ const OrdersSheet = ({ orders, onClose }) => {
                     ))}
                   </div>
 
+                  {/* Item list */}
                   <div className="order-items-preview">
                     {order.items.map((item, j) => (
                       <div key={j} className="order-preview-row">
@@ -69,15 +85,29 @@ const OrdersSheet = ({ orders, onClose }) => {
                           {item.selectedOption && (
                             <div className="order-preview-option">{item.selectedOption}</div>
                           )}
-                          <div className="order-preview-meta">Qty: {item.quantity} · {item.price}</div>
+                          <div className="order-preview-meta">
+                            Qty: {item.quantity} · {item.total || item.price}
+                          </div>
+                        </div>
+                        <div className="order-item-price">
+                          {item.total || item.price}
                         </div>
                       </div>
                     ))}
                   </div>
 
+                  {/* Footer: total + view details */}
                   <div className="order-card-footer">
-                    <span className="order-total-label">Total</span>
-                    <span className="order-total-val">{order.total}</span>
+                    <div className="order-footer-left">
+                      <span className="order-total-label">Order Total</span>
+                      <span className="order-total-val">{order.total}</span>
+                    </div>
+                    <button
+                      className="order-view-detail-btn"
+                      onClick={() => onViewDetail?.(order.id)}
+                    >
+                      Track →
+                    </button>
                   </div>
                 </div>
               );

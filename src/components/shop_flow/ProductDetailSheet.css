@@ -138,12 +138,78 @@
   color: #aaa;
 }
 
+/* ── Offer hero badge (overlaid on image) ────────────────────────────────── */
+.detail-offer-hero-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  font-size: 12px;
+  font-weight: 800;
+  font-family: 'Mulish', sans-serif;
+  padding: 5px 12px;
+  border-radius: 20px;
+  color: #fff;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.22);
+}
+.badge-pct  { background: #c0392b; }
+.badge-bogo { background: #4B0082; }
+
+/* ── Offer banners (below hero) ─────────────────────────────────────────── */
+.detail-offer-banner {
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Quicksand', sans-serif;
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+.detail-offer-urgency {
+  background: #fff8ed;
+  color: #b35c00;
+  border: 1px solid #ffd59e;
+}
+.detail-offer-bogo {
+  background: #f5f0ff;
+  color: #4B0082;
+  border: 1px solid #d4b8f0;
+}
+
+/* ── Price row ───────────────────────────────────────────────────────────── */
+.detail-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 13px;
+  flex-wrap: wrap;
+}
+
 .detail-price {
   font-size: 28px;
   font-weight: 900;
   color: #4B0082;
-  margin-bottom: 13px;
   font-family: 'Mulish', sans-serif;
+}
+.detail-price-sale {
+  color: #c0392b;
+}
+.detail-price-original {
+  font-size: 17px;
+  font-weight: 600;
+  color: #bbb;
+  text-decoration: line-through;
+  font-family: 'Mulish', sans-serif;
+}
+.detail-save-badge {
+  background: #fdecea;
+  color: #c0392b;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: 'Mulish', sans-serif;
+  padding: 3px 8px;
+  border-radius: 20px;
+  align-self: center;
 }
 
 .detail-desc {

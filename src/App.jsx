@@ -62,6 +62,13 @@ import CartSheet from './components/shop_flow/CartSheet';
 import CheckoutSheet from './components/shop_flow/CheckoutSheet';
 import OrderConfirmation from './components/shop_flow/OrderConfirmation';
 import OrdersSheet from './components/shop_flow/OrdersSheet';
+import OrderDetailSheet from './components/shop_flow/OrderDetailSheet';
+import ChatHistorySheet from './components/companion_tab_components/ChatHistorySheet';
+import SuggestionsSheet from './components/companion_tab_components/SuggestionsSheet';
+import LeftSidebar from './components/companion_tab_components/LeftSidebar';
+import NotificationToast from './components/companion_tab_components/NotificationToast';
+import { loadOrders, saveOrder, loadChatSessions, saveChatSession } from './services/db';
+import { getOrderStatus, STATUS_OFFSETS, getDeliveryMeta } from './services/orderMeta';
 import './App.css';
 
 // ─── Product catalog (real products from app components) ─────────────────────
@@ -101,7 +108,7 @@ const productsByCategory = {
       rating: 4.9,
       reviews: 2100,
       description: 'The Lego Star Wars Millennium Falcon is a must-have for any Star Wars fan. This iconic starship features stunning detail and is perfect for both play and display.',
-      tags: ['200 pcs – $60', '400 pcs – $100'],
+      tags: ['100 pcs – $45', '200 pcs – $60', '400 pcs – $100'],
       image: 'https://assets.api.uizard.io/api/cdn/stream/545b2668-558f-420c-9fc6-c2b4ccdf0ed2.png',
     },
     {
@@ -247,8 +254,18 @@ function App() {
   const [notificationCount, setNotificationCount] = useState(0);
   const [priceDropdownProduct, setPriceDropdownProduct] = useState(null);
 
-  // Menu
+  // Order-status notifications (bell panel)
+  const [orderNotifications, setOrderNotifications] = useState([]);
+  const lastKnownStatusRef = React.useRef({});
+  // Toast popup for status changes
+  const [notifToast, setNotifToast] = useState(null);
+  // Order detail sheet
+  const [openOrderDetailId, setOpenOrderDetailId] = useState(null);
+
+  // Menu (used by Me / Carts tab headers)
   const [menuOpen, setMenuOpen] = useState(false);
+  // Left sidebar (Agent tab)
+  const [sidebarExpanded, setSidebarExpanded] = useState(false);
 
   // ── NEW: Shop flow state ───────────────────────────────────────────────
   const [openProductDetail, setOpenProductDetail] = useState(null);
@@ -256,6 +273,8 @@ function App() {
   const [showCheckoutSheet, setShowCheckoutSheet] = useState(false);
   const [showOrderConf, setShowOrderConf] = useState(false);
   const [showOrdersSheet, setShowOrdersSheet] = useState(false);
+  const [showHistorySheet, setShowHistorySheet] = useState(false);
+  const [showSuggestionsSheet, setShowSuggestionsSheet] = useState(false);
   const [agentCartItems, setAgentCartItems] = useState([]);
   const [orderHistory, setOrderHistory] = useState([]);
 
@@ -357,6 +376,75 @@ function App() {
     return 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=400&fit=crop&auto=format';
   };
 
+  // ── Load orders from API / localStorage on mount ─────────────────────────
+  React.useEffect(() => {
+    loadOrders().then(setOrderHistory).catch(() => {});
+  }, []);
+
+  // ── Order-status change polling ───────────────────────────────────────────
+  // (getOrderStatus is imported from orderMeta.js)
+
+  React.useEffect(() => {
+    if (orderHistory.length === 0) return;
+
+    const NOTIF_MAP = {
+      'Processed':          { title: 'Order Confirmed ✅',     body: (id) => `Order #${id} is confirmed and being prepared.` },
+      'Shipped':            { title: 'Order Shipped 🚚',        body: (id) => `Your order #${id} is on its way!` },
+      'Out for Delivery':   { title: 'Out for Delivery 📦',     body: (id) => `Your order #${id} is out for delivery today.` },
+      'Delivered':          { title: 'Order Delivered 🎉',      body: (id) => `Your order #${id} has been delivered.` },
+    };
+
+    const FORTY_EIGHT_H = 48 * 60 * 60 * 1000;
+
+    const check = () => {
+      // Auto-delete notifications older than 48 h
+      setOrderNotifications(prev => prev.filter(n => Date.now() - n.time < FORTY_EIGHT_H));
+
+      orderHistory.forEach(order => {
+        const newStatus  = getOrderStatus(order.createdAt);
+        const lastStatus = lastKnownStatusRef.current[order.id];
+
+        if (lastStatus === undefined) {
+          // First time we see this order — record silently, no toast
+          lastKnownStatusRef.current[order.id] = newStatus;
+          return;
+        }
+
+        if (lastStatus !== newStatus && NOTIF_MAP[newStatus]) {
+          lastKnownStatusRef.current[order.id] = newStatus;
+          const notifId = `${order.id}-${newStatus}`;
+          const notif = {
+            id: notifId,
+            title: NOTIF_MAP[newStatus].title,
+            body: NOTIF_MAP[newStatus].body(order.id),
+            time: Date.now(),
+            read: false,
+            orderId: order.id,
+          };
+          setOrderNotifications(prev => {
+            if (prev.find(n => n.id === notifId)) return prev;
+            return [notif, ...prev];
+          });
+          // Show toast popup
+          setNotifToast({ ...notif, id: notifId + '-toast' });
+        }
+      });
+    };
+
+    check();
+    // Poll every 5 s — fast enough to catch the 10-second Processed transition
+    const interval = setInterval(check, 5000);
+    return () => clearInterval(interval);
+  }, [orderHistory]);
+
+  // ── Auto-save chat session whenever messages change ───────────────────────
+  React.useEffect(() => {
+    // Only save sessions that have at least one user message
+    if (messages.some(m => !m.isBot)) {
+      saveChatSession(messages);
+    }
+  }, [messages]);
+
   // ── Price drop effect ─────────────────────────────────────────────────────
   React.useEffect(() => {
     if (priceDropNotifications.length > 0 && activeTab === 'Agent') {
@@ -404,6 +492,93 @@ function App() {
     }
   }, [priceDropNotifications, priceDropdownProduct, activeTab]);
 
+  // ── Contextual response builder ───────────────────────────────────────────
+  const buildContextualResponse = (userMsg, category) => {
+    const m = userMsg.toLowerCase().trim();
+
+    // ── extract a clean "intent phrase" from the raw message ──
+    const clean = userMsg
+      .replace(/[.!?]+$/, '')
+      .replace(/^(i (want|need|am looking for|would like|'m looking for)|show me|find me|can you (show|find)|do you have|get me)\s+/i, '')
+      .trim();
+
+    // ── beauty ──
+    if (category === 'beauty') {
+      if (m.includes('moistur') || m.includes('cream') || m.includes('dry skin') || m.includes('hydrat'))
+        return `Great — you're after something hydrating. Here are our best moisturisers and skincare treatments. Tap any to see the full details and ingredients.`;
+      if (m.includes('dior') || m.includes('designer') || m.includes('luxury') || m.includes('premium') || m.includes('high end'))
+        return `Excellent taste! Here are our luxury beauty picks, including Dior. Tap any card to explore the full details.`;
+      if (m.includes('la mer') || m.includes('lamer'))
+        return `La Mer is one of our finest. Here are our top skincare picks — tap to see full details and options.`;
+      if (m.includes('gift') || m.includes('present'))
+        return `Great idea for a gift! Here are our top beauty picks that make a perfect present. Tap any item to see details.`;
+      if (m.includes('serum') || m.includes('anti-age') || m.includes('anti age') || m.includes('wrinkle'))
+        return `Looking for something to target ageing or skin texture? Here are our top skincare picks. Tap any to see the ingredients and options.`;
+      // fallback with clean phrase
+      if (clean.length > 3 && clean.length < 60)
+        return `Got it — you're looking for ${clean}. Here are our best beauty picks. Tap any item to view full details.`;
+      return `Here are our top beauty picks for you. Tap any item to view the full details.`;
+    }
+
+    // ── toys ──
+    if (category === 'toys') {
+      const ageMatch = m.match(/(\d+)\s*(year|yr)/);
+      if (ageMatch)
+        return `Perfect! Here are toys ideal for a ${ageMatch[1]}-year-old. Tap any item to see the age range, features, and options.`;
+      if (m.includes('lego') || m.includes('build') || m.includes('construct'))
+        return `Great choice! Building sets are always a hit. Here are our top picks including LEGO — tap to see piece counts and options.`;
+      if (m.includes('fisher') || m.includes('baby') || m.includes('infant') || m.includes('toddler'))
+        return `Lovely! Here are our top picks for babies and toddlers, including Fisher-Price. Tap any to see age guidance and options.`;
+      if (m.includes('gift') || m.includes('present') || m.includes('birthday'))
+        return `Looking for the perfect gift? Here are our most popular toys — tap any item to see details and options.`;
+      if (m.includes('educational') || m.includes('learning') || m.includes('stem'))
+        return `Great thinking! Here are some of our top educational and STEM toys. Tap to see age range, features, and options.`;
+      if (clean.length > 3 && clean.length < 60)
+        return `Got it — you're after ${clean}. Here are our top toy picks. Tap any to see full details and options.`;
+      return `Here are some great toys! Tap any item to see details, age range, and options.`;
+    }
+
+    // ── apparel ──
+    if (category === 'apparel') {
+      if (m.includes('casual') || m.includes('everyday') || m.includes('relaxed') || m.includes('comfy') || m.includes('comfort'))
+        return `Great — casual and comfortable it is! Here are our top everyday clothing picks. Tap any item to see sizes and details.`;
+      if (m.includes('smart') || m.includes('formal') || m.includes('office') || m.includes('work') || m.includes('professional'))
+        return `Looking sharp! Here are our best smart and polished clothing options. Tap to explore sizes and full details.`;
+      if (m.includes('jeans') || m.includes('denim'))
+        return `Classic choice! Here are our best denim and jeans options including Levi's. Tap to see sizes, fits, and details.`;
+      if (m.includes('polo') || m.includes('ralph') || m.includes('lauren') || m.includes('shirt'))
+        return `Good eye! Here are our premium shirts and polo picks. Tap any item to see available sizes and details.`;
+      if (m.includes('summer') || m.includes('warm') || m.includes('beach') || m.includes('holiday'))
+        return `Perfect for warm weather! Here are our best summer clothing picks. Tap to see sizes and full details.`;
+      if (m.includes('gift') || m.includes('present'))
+        return `Great idea for a gift! Here are our top clothing picks. Tap any to see sizes and full details.`;
+      if (clean.length > 3 && clean.length < 60)
+        return `Got it — you're looking for ${clean}. Here are our best clothing options. Tap any to see sizes and details.`;
+      return `Here are some great clothing options for you. Tap any item to see sizes and full details.`;
+    }
+
+    // ── shoes ──
+    if (category === 'shoes') {
+      if (m.includes('run') || m.includes('jog') || m.includes('sport') || m.includes('training') || m.includes('gym') || m.includes('workout'))
+        return `Let's get you moving! Here are our best performance and running shoes. Tap any to see sizes, colourways, and details.`;
+      if (m.includes('casual') || m.includes('everyday') || m.includes('streetwear') || m.includes('street'))
+        return `Great choice for everyday wear! Here are our top casual sneakers and lifestyle shoes. Tap to see sizes and options.`;
+      if (m.includes('nike') || m.includes('adidas'))
+        return `Great taste! Here are our Nike and Adidas picks. Tap any to see sizes, colourways, and full details.`;
+      if (m.includes('comfort') || m.includes('comfy') || m.includes('walk') || m.includes('standing'))
+        return `Comfort is key! Here are our best all-day comfort shoes. Tap any to see sizes and full details.`;
+      if (m.includes('gift') || m.includes('present'))
+        return `Shoes make a great gift! Here are our top picks. Tap any to see sizes and details.`;
+      if (m.includes('sneaker') || m.includes('trainer'))
+        return `Fresh kicks incoming! Here are our latest sneakers and trainers. Tap any to see sizes and colourways.`;
+      if (clean.length > 3 && clean.length < 60)
+        return `Got it — you're after ${clean}. Here are our best shoe picks. Tap any to see sizes and options.`;
+      return `Here are the best shoes we carry. Tap any item to see sizes, colours, and full details.`;
+    }
+
+    return `Here are some options for you. Tap any product to view full details.`;
+  };
+
   // ── Message handling ──────────────────────────────────────────────────────
   const handleSendMessage = (newMessage) => {
     setMessages(prev => [...prev, { isBot: false, text: newMessage, avatar: null }]);
@@ -411,13 +586,7 @@ function App() {
 
     if (category) {
       const products = productsByCategory[category] || [];
-      const agentTexts = {
-        beauty: 'Here are our top beauty picks for you — tap any item to see the full details.',
-        toys: 'Here are some great toys! Tap any item to see details, age range, and options.',
-        apparel: 'Here are some great clothing options for you. Tap to see sizes and details.',
-        shoes: 'Here are the best shoes we have. Tap to see sizes, colours, and full details.',
-      };
-      const text = agentTexts[category] || `Here are some options for you. Tap any product to view details.`;
+      const text = buildContextualResponse(newMessage, category);
 
       setTimeout(() => {
         setMessages(prev => [...prev, {
@@ -470,6 +639,8 @@ function App() {
         name: product.name,
         business: product.business,
         price: product.price,
+        originalPrice: product.originalPrice || undefined,
+        offer: product.offer || undefined,
         quantity: 1,
         total: `$${parsePrice(product.price).toFixed(2)}`,
         image: product.image,
@@ -516,16 +687,21 @@ function App() {
   const handleOrderDone = () => {
     const parsePrice = (p) => parseFloat(String(p).replace(/[^0-9.]/g, '')) || 0;
     const total = agentCartItems.reduce((s, i) => s + parsePrice(i.price) * i.quantity, 0);
-    const statuses = ['Confirmed', 'Processing', 'Shipped'];
-    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+    const now = Date.now();
+    const orderId = 'AFG-' + Math.floor(1000 + Math.random() * 9000);
     const newOrder = {
-      id: 'AFG-' + Math.floor(1000 + Math.random() * 9000),
-      date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
-      status: randomStatus,
+      id: orderId,
+      date: new Date(now).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+      createdAt: now,
       items: agentCartItems.map(i => ({ ...i })),
       total: `$${total.toFixed(2)}`,
+      deliveryMeta: getDeliveryMeta(orderId), // deterministic, stored for consistent display
     };
-    setOrderHistory(prev => [newOrder, ...prev]);
+    setOrderHistory(prev => {
+      const updated = [newOrder, ...prev];
+      saveOrder(newOrder);
+      return updated;
+    });
     setShowOrderConf(false);
     setAgentCartItems([]);
     setCartItems([]);
@@ -628,6 +804,36 @@ function App() {
   const handleMenuMyCart = () => { setMenuOpen(false); setShowCartSheet(true); };
   const handleMenuForMe = () => { setMenuOpen(false); setActiveTab('Me'); setMeTabTrigger(p => p + 1); };
 
+  // ── Left sidebar actions ──────────────────────────────────────────────────
+  const handleSidebarAction = (action) => {
+    setSidebarExpanded(false);
+    switch (action) {
+      case 'newChat':
+        setMessages([{ isBot: true, text: 'What are you looking for?', avatar: '/shopper-agent-logo.png' }]);
+        setAgentCartItems([]);
+        setCartItems([]);
+        break;
+      case 'history':
+        setShowHistorySheet(true);
+        break;
+      case 'account':
+        // placeholder — My Account
+        break;
+      case 'cart':
+        setShowCartSheet(true);
+        break;
+      case 'orders':
+        setShowOrdersSheet(true);
+        break;
+      case 'suggestions':
+        setActiveTab('Me');
+        setMeTabTrigger(p => p + 1);
+        break;
+      default:
+        break;
+    }
+  };
+
   const categoryTabs = [
     { name: 'Beauty', Icon: BeautyTabIcon, Text: BeautyCategoryText },
     { name: 'Apparel', Icon: ApparelIcon, Text: ApparelText },
@@ -722,48 +928,92 @@ function App() {
       )}
 
       {/* ── Agent tab ── */}
-      {activeTab === 'Agent' && (
-        <div className="view-agent">
-          <CompanionChatHeader
-            onMenuToggle={() => setMenuOpen(o => !o)}
-            notifications={priceDropNotifications}
-            onNotificationDismiss={handleNotificationDismiss}
-          />
+      {activeTab === 'Agent' && (() => {
+        const hasStartedChat = messages.some(m => !m.isBot);
+        return (
+          <>
+            {/* Top navbar: logo | title | bell | history */}
+            <CompanionChatHeader
+              onHistoryClick={() => setShowHistorySheet(true)}
+              priceDropNotifications={priceDropNotifications}
+              onPriceDropDismiss={handleNotificationDismiss}
+              orderNotifications={orderNotifications}
+              onOrderDismiss={(id) =>
+                setOrderNotifications(prev => prev.filter(n => n.id !== id))
+              }
+              onOrderMarkAllRead={() =>
+                setOrderNotifications(prev => prev.map(n => ({ ...n, read: true })))
+              }
+              onOrderNotifClick={(orderId) => setOpenOrderDetailId(orderId)}
+            />
 
-          {/* Floating cart button */}
-          {agentCartCount > 0 && (
-            <button
-              onClick={() => setShowCartSheet(true)}
-              style={{
-                position: 'absolute', top: 62, right: 16, zIndex: 50,
-                background: '#4B0082', color: '#fff', border: 'none',
-                borderRadius: '22px', padding: '8px 14px',
-                fontWeight: '700', fontSize: '13px', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: '6px',
-                boxShadow: '0 3px 12px rgba(75,0,130,0.35)',
-              }}
-            >
-              🛒 Cart ({agentCartCount})
-            </button>
-          )}
-
-          <div className="chat-messages">
-            {messages.map((message, index) => (
-              <ChatMessage
-                key={index}
-                isBot={message.isBot}
-                text={message.text}
-                avatar={message.avatar}
-                products={message.products}
-                onProductClick={handleOpenProductDetail}
-                onAddToCart={handleAddToCartFromDetail}
-                showPriceComparison={message.showPriceComparison}
+            <div className="view-agent">
+              {/* Left sidebar — icons (collapsed) or icons + labels (expanded) */}
+              <LeftSidebar
+                expanded={sidebarExpanded}
+                onToggle={() => setSidebarExpanded(o => !o)}
+                onAction={handleSidebarAction}
+                cartCount={agentCartCount}
               />
-            ))}
-          </div>
-          <ChatInput onSend={handleSendMessage} />
-        </div>
-      )}
+
+              {/* Main chat area */}
+              <div className="chat-main">
+                {/* Cart bar — shows in both welcome and active states when cart has items */}
+                {agentCartCount > 0 && (
+                  <div className="chat-active-bar">
+                    <button
+                      className="chat-active-cart-btn"
+                      onClick={() => setShowCartSheet(true)}
+                    >
+                      🛒 Cart ({agentCartCount})
+                    </button>
+                  </div>
+                )}
+
+                {!hasStartedChat ? (
+                  /* ── Welcome / centred state ── */
+                  <div className="chat-welcome">
+                    <div className="chat-welcome-inner">
+                      <img src="/shopper-agent-logo.png" alt="Shopper Agent" className="welcome-logo" />
+                      <h1 className="welcome-heading">What can I find for you?</h1>
+                      <p className="welcome-sub">Search beauty, toys, apparel, shoes &amp; more.</p>
+                      <ChatInput
+                        centered
+                        onSend={handleSendMessage}
+                        onSuggestionsClick={() => setShowSuggestionsSheet(true)}
+                        onOrdersClick={() => setShowOrdersSheet(true)}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  /* ── Active chat state ── */
+                  <>
+
+                    {/* Messages */}
+                    <div className="chat-messages">
+                      {messages.map((message, index) => (
+                        <ChatMessage
+                          key={index}
+                          isBot={message.isBot}
+                          text={message.text}
+                          avatar={message.avatar}
+                          products={message.products}
+                          onProductClick={handleOpenProductDetail}
+                          onAddToCart={handleAddToCartFromDetail}
+                          showPriceComparison={message.showPriceComparison}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Input fixed to bottom — no tags in active mode */}
+                    <ChatInput onSend={handleSendMessage} />
+                  </>
+                )}
+              </div>
+            </div>
+          </>
+        );
+      })()}
 
       {/* ── Me tab ── */}
       {activeTab === 'Me' && (
@@ -875,7 +1125,51 @@ function App() {
 
       {/* ── Orders sheet ── */}
       {showOrdersSheet && (
-        <OrdersSheet orders={orderHistory} onClose={() => setShowOrdersSheet(false)} />
+        <OrdersSheet
+          orders={orderHistory}
+          onClose={() => setShowOrdersSheet(false)}
+          onViewDetail={(orderId) => {
+            setShowOrdersSheet(false);
+            setOpenOrderDetailId(orderId);
+          }}
+        />
+      )}
+
+      {/* ── Order detail sheet ── */}
+      {openOrderDetailId && (() => {
+        const detailOrder = orderHistory.find(o => o.id === openOrderDetailId);
+        return detailOrder ? (
+          <OrderDetailSheet
+            order={detailOrder}
+            onClose={() => setOpenOrderDetailId(null)}
+          />
+        ) : null;
+      })()}
+
+      {/* ── Status change toast ── */}
+      <NotificationToast
+        toast={notifToast}
+        onDismiss={() => setNotifToast(null)}
+        onViewOrder={(orderId) => {
+          setNotifToast(null);
+          setOpenOrderDetailId(orderId);
+        }}
+      />
+
+      {/* ── Chat history sheet ── */}
+      {showHistorySheet && (
+        <ChatHistorySheet currentMessages={messages} onClose={() => setShowHistorySheet(false)} />
+      )}
+
+      {/* ── Suggestions sheet ── */}
+      {showSuggestionsSheet && (
+        <SuggestionsSheet
+          onClose={() => setShowSuggestionsSheet(false)}
+          onProductClick={(product) => {
+            setShowSuggestionsSheet(false);
+            setOpenProductDetail(product);
+          }}
+        />
       )}
 
       {/* ── NEW: Shop flow sheets ── */}

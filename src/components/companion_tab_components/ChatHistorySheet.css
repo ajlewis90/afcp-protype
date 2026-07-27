@@ -1,0 +1,135 @@
+/* ── Backdrop ───────────────────────────────────────────────────────────── */
+.history-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 400;
+  display: flex;
+  align-items: flex-end;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.history-backdrop.history-visible { opacity: 1; }
+
+/* ── Sheet ──────────────────────────────────────────────────────────────── */
+.history-sheet {
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-height: 86%;
+  overflow-y: auto;
+  animation: slideUpHistorySheet 0.32s cubic-bezier(0.34, 1.26, 0.64, 1);
+  padding-bottom: 28px;
+}
+@keyframes slideUpHistorySheet {
+  from { transform: translateY(100%); opacity: 0.6; }
+  to   { transform: translateY(0);    opacity: 1;   }
+}
+
+/* ── Handle ─────────────────────────────────────────────────────────────── */
+.sheet-handle {
+  width: 40px;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  margin: 12px auto 0;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid #f2f2f2;
+}
+.history-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111;
+  margin: 0;
+  font-family: 'Mulish', sans-serif;
+}
+.history-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Empty state ────────────────────────────────────────────────────────── */
+.history-empty {
+  text-align: center;
+  padding: 60px 20px 24px;
+  color: #999;
+}
+.history-empty-icon { font-size: 48px; margin-bottom: 12px; }
+.history-empty p { font-size: 17px; font-weight: 700; color: #444; margin: 0 0 6px; }
+.history-empty span { font-size: 13px; color: #aaa; }
+
+/* ── List wrapper ───────────────────────────────────────────────────────── */
+.history-list {
+  padding: 8px 0;
+}
+
+/* ── Period group ───────────────────────────────────────────────────────── */
+.history-group {
+  margin-bottom: 4px;
+}
+.history-group-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #aaa;
+  padding: 10px 20px 4px;
+  font-family: 'Quicksand', sans-serif;
+  letter-spacing: 0.2px;
+}
+
+/* ── Single row (Grok style) ────────────────────────────────────────────── */
+.history-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 20px;
+  margin: 0 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.history-row:hover,
+.history-row:active {
+  background: #f5f5f5;
+}
+.history-row-active {
+  background: #f5f0ff;
+}
+
+.history-row-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111;
+  font-family: 'Mulish', sans-serif;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 18px;
+}
+.history-row-active .history-row-title {
+  color: #4B0082;
+}
+
+.history-row-time {
+  font-size: 13px;
+  color: #b0b0b0;
+  font-family: 'Quicksand', sans-serif;
+  flex-shrink: 0;
+}

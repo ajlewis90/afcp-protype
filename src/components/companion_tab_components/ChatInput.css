@@ -1,17 +1,47 @@
+/* ── Base container ─────────────────────────────────────────────────────────
+   Default (bottom) mode: sits at bottom of the chat area.
+   Centred mode: sits inside .chat-welcome and is centred by the parent.
+   ────────────────────────────────────────────────────────────────────────── */
 .chat-input-container {
   padding: 12px 16px;
   background-color: #fff;
-  border-top: 1px solid #4B0082;
+  border-top: 1px solid #e8e0f0;
   position: relative;
+  flex-shrink: 0;
 }
 
+/* ── Centred mode: no top border, transparent background ── */
+.chat-input-container--centered {
+  border-top: none;
+  background: transparent;
+  padding: 0;
+  width: 100%;
+}
+
+/* ── Wrapper row (textarea + voice + send) ── */
 .chat-input-wrapper {
   position: relative;
   display: flex;
   align-items: flex-end;
-  gap: 10px;
+  gap: 8px;
 }
 
+/* Centred mode: slightly elevated card look */
+.chat-input-container--centered .chat-input-wrapper {
+  background: #fff;
+  border: 1.5px solid #ddd;
+  border-radius: 24px;
+  padding: 4px 4px 4px 16px;
+  box-shadow: 0 4px 24px rgba(75, 0, 130, 0.10);
+  gap: 4px;
+  align-items: center;
+}
+
+.chat-input-container--centered .chat-input-wrapper:focus-within {
+  border-color: #4B0082;
+}
+
+/* ── Textarea + voice wrapper ── */
 .chat-input-with-voice {
   position: relative;
   flex-grow: 1;
@@ -19,6 +49,12 @@
   align-items: flex-end;
 }
 
+/* Centred mode: no relative positioning needed */
+.chat-input-container--centered .chat-input-with-voice {
+  align-items: center;
+}
+
+/* ── Textarea ── */
 .chat-input {
   flex-grow: 1;
   padding: 10px 42px 10px 15px;
@@ -43,6 +79,20 @@
   border-color: #4B0082;
 }
 
+/* Centred mode: borderless inside the card wrapper */
+.chat-input-container--centered .chat-input {
+  border: none;
+  border-radius: 0;
+  padding: 10px 0 10px 0;
+  background: transparent;
+  min-height: 44px;
+}
+
+.chat-input-container--centered .chat-input:focus {
+  border-color: transparent;
+}
+
+/* ── Voice button ── */
 .voice-input-button {
   position: absolute;
   right: 10px;
@@ -51,18 +101,17 @@
   border: none;
   font-size: 18px;
   cursor: pointer;
-  color: #666;
+  color: #888;
   outline: none;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
+  transition: color 0.15s;
 }
 
-.voice-input-button:hover {
-  color: #4B0082;
-}
+.voice-input-button:hover { color: #4B0082; }
 
 .voice-input-button.listening {
   animation: pulse 1.2s ease-in-out infinite alternate;
@@ -70,9 +119,21 @@
 
 @keyframes pulse {
   from { transform: scale(1); }
-  to   { transform: scale(1.2); }
+  to   { transform: scale(1.25); }
 }
 
+/* Centred mode: voice inside card, not absolute */
+.chat-input-container--centered .voice-input-button {
+  position: static;
+  right: auto;
+  bottom: auto;
+  font-size: 20px;
+  color: #666;
+  padding: 6px;
+  flex-shrink: 0;
+}
+
+/* ── Send button ── */
 .send-button {
   flex-shrink: 0;
   padding: 10px 20px;
@@ -90,10 +151,23 @@
   transition: background-color 0.15s ease;
 }
 
-.send-button:hover {
-  background-color: #360060;
+.send-button:hover { background-color: #360060; }
+
+/* Centred mode: circular send button */
+.chat-input-container--centered .send-button {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
 }
 
+/* ── Inline suggestions dropdown ── */
 .suggestions {
   position: absolute;
   bottom: calc(100% + 8px);
@@ -119,9 +193,7 @@
   gap: 10px;
 }
 
-.suggestion-item:hover {
-  background-color: #f5f0ff;
-}
+.suggestion-item:hover { background-color: #f5f0ff; }
 
 .suggestion-icon {
   font-size: 11px;
@@ -136,3 +208,36 @@
   justify-content: center;
   flex-shrink: 0;
 }
+
+/* ── Quick-action tags (centred mode only) ── */
+.chat-quick-tags {
+  display: flex;
+  gap: 8px;
+  padding-top: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.quick-tag {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1.5px solid #d8c8f0;
+  color: #4B0082;
+  border-radius: 20px;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  backdrop-filter: blur(4px);
+  transition: background 0.15s, border-color 0.15s, transform 0.12s;
+  letter-spacing: 0.2px;
+}
+
+.quick-tag:hover {
+  background: #ede6f8;
+  border-color: #b090e0;
+  transform: translateY(-1px);
+}
+
+.quick-tag:active { transform: translateY(0); }

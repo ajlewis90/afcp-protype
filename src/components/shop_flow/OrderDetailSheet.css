@@ -1,0 +1,376 @@
+/* ── Backdrop + sheet animation ──────────────────────────────────────────── */
+.order-detail-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 500;
+  display: flex;
+  align-items: flex-end;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.order-detail-visible { opacity: 1; }
+
+.order-detail-sheet {
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-height: 92%;
+  display: flex;
+  flex-direction: column;
+  animation: slideUpSheet 0.34s cubic-bezier(0.34, 1.26, 0.64, 1);
+}
+
+@keyframes slideUpSheet {
+  from { transform: translateY(100%); opacity: 0.6; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.order-detail-scroll {
+  overflow-y: auto;
+  flex: 1;
+  padding: 0 16px 32px;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.order-detail-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
+}
+.order-detail-header-left { flex: 1; }
+.order-detail-num {
+  font-family: 'Mulish', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: #111;
+}
+.order-detail-date {
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 2px;
+}
+.order-detail-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Status badge + carrier ──────────────────────────────────────────────── */
+.order-detail-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  gap: 8px;
+}
+.order-detail-status-badge {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Quicksand', sans-serif;
+  padding: 5px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.2px;
+}
+.order-detail-carrier {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+}
+.carrier-name {
+  font-family: 'Mulish', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  color: #333;
+}
+.carrier-track {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 10px;
+  color: #999;
+  letter-spacing: 0.5px;
+}
+
+/* ── ETA banner ──────────────────────────────────────────────────────────── */
+.order-detail-eta-banner {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: #f0f9f4;
+  border: 1px solid #c3e6cb;
+  border-radius: 10px;
+  padding: 9px 12px;
+  margin-top: 12px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #155724;
+}
+
+/* ── Section title ───────────────────────────────────────────────────────── */
+.order-detail-section-title {
+  font-family: 'Mulish', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #111;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── Timeline ────────────────────────────────────────────────────────────── */
+.order-detail-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-row {
+  display: flex;
+  gap: 12px;
+  min-height: 52px;
+}
+
+.timeline-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 22px;
+}
+
+.timeline-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 900;
+  color: #fff;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.dot-done    { background: #4B0082; }
+.dot-current { background: #4B0082; box-shadow: 0 0 0 4px rgba(75,0,130,0.15); }
+
+.timeline-line {
+  flex: 1;
+  width: 2px;
+  background: #e8e8e8;
+  margin: 2px 0;
+  min-height: 24px;
+  transition: background 0.2s;
+}
+.line-done { background: #4B0082; }
+
+.timeline-content {
+  flex: 1;
+  padding-bottom: 16px;
+}
+.timeline-step-name {
+  font-family: 'Mulish', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #bbb;
+  margin-bottom: 2px;
+}
+.timeline-step-name.step-done { color: #111; }
+.timeline-step-time {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 11px;
+  color: #bbb;
+}
+.step-done ~ .timeline-step-time,
+.dot-done + .timeline-content .timeline-step-time {
+  color: #888;
+}
+.timeline-step-detail {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 11px;
+  color: #4B0082;
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+/* ── Current location ────────────────────────────────────────────────────── */
+.order-detail-location-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #faf8ff;
+  border: 1px solid #e9e0f8;
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.location-pin { font-size: 20px; flex-shrink: 0; }
+.location-hub {
+  font-family: 'Mulish', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #222;
+}
+.location-sub {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* ── Delivery outcome boxes ──────────────────────────────────────────────── */
+.order-detail-outcome {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border-radius: 14px;
+  padding: 14px;
+  border: 1px solid;
+}
+.outcome-success {
+  background: #f0fff4;
+  border-color: #c3e6cb;
+}
+.outcome-failed {
+  background: #fff8f0;
+  border-color: #ffd4a8;
+}
+.outcome-ofd {
+  background: #f0f8ff;
+  border-color: #bee5fd;
+}
+
+.outcome-icon { font-size: 22px; flex-shrink: 0; }
+.outcome-content { flex: 1; }
+.outcome-title {
+  font-family: 'Mulish', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 4px;
+}
+.outcome-sub {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+  line-height: 1.45;
+}
+.outcome-detail-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 5px;
+  align-items: flex-start;
+}
+.outcome-detail-label {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #999;
+  white-space: nowrap;
+  min-width: 72px;
+  flex-shrink: 0;
+}
+.outcome-detail-val {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12px;
+  color: #333;
+  font-weight: 600;
+}
+.outcome-detail-link {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12px;
+  color: #4B0082;
+  font-weight: 700;
+  text-decoration: none;
+}
+.outcome-note {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 11px;
+  color: #888;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* ── Items ───────────────────────────────────────────────────────────────── */
+.order-detail-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.order-detail-item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 10px;
+}
+.order-detail-item-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #eee;
+  flex-shrink: 0;
+}
+.order-detail-item-info { flex: 1; min-width: 0; }
+.order-detail-item-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.order-detail-item-opt {
+  font-size: 11px;
+  color: #4B0082;
+  font-weight: 600;
+}
+.order-detail-item-meta {
+  font-size: 11px;
+  color: #999;
+}
+.order-detail-item-price {
+  font-size: 13px;
+  font-weight: 800;
+  color: #4B0082;
+  font-family: 'Mulish', sans-serif;
+  flex-shrink: 0;
+}
+
+/* ── Total row ───────────────────────────────────────────────────────────── */
+.order-detail-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ececec;
+  margin-top: 14px;
+  padding-top: 12px;
+}
+.order-detail-total-label {
+  font-size: 13px;
+  color: #888;
+  font-weight: 600;
+}
+.order-detail-total-val {
+  font-size: 17px;
+  font-weight: 900;
+  color: #4B0082;
+  font-family: 'Mulish', sans-serif;
+}
